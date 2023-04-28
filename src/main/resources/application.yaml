@@ -1,0 +1,29 @@
+spring:
+  sql:
+    init:
+      mode: always
+  datasource:
+    generate-unique-name: false
+    name: homie-demo-db
+    url: "${SPRING_DATASOURCE_URL:jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE}"
+    username: "${SPRING_DATASOURCE_USERNAME:SA}"
+    password: "${SPRING_DATASOURCE_PASSWORD:SA}"
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:2}
+  application:
+    name: homie-demo
+  jpa:
+    defer-datasource-initialization: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+      probes:
+        enabled: true
