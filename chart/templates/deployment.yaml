@@ -41,11 +41,7 @@ spec:
             - name: "SPRING_DATASOURCE_PASSWORD"
               value: {{ .Values.app.database.password }}
             - name: "SPRING_PROFILES_ACTIVE"
-              value: "{{ .Values.app.spring.profile | default 'default'}}"
-            - name: "GOOGLE_OAUTH_CLIENT_ID"
-              value: {{ .Values.app.oauth.google.client_id }}
-            - name: "GOOGLE_OAUTH_CLIENT_SECRET"
-              value: {{ .Values.app.oauth.google.client_secret }}
+              value: {{ .Values.app.spring.profile }}
           ports:
             - name: http
               containerPort: 8080
