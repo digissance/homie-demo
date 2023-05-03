@@ -1,7 +1,7 @@
-package biz.digissance.homiedemo;
+package biz.digissance.homiedemo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,11 +10,11 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Version;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -24,7 +24,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Setter
 @ToString
+@SuperBuilder
 @MappedSuperclass
+@NoArgsConstructor
 @EntityListeners({AuditingEntityListener.class})
 public abstract class BaseEntity {
 
@@ -34,19 +36,24 @@ public abstract class BaseEntity {
     private Long id;
 
     @Version
+    @JsonIgnore
     private Long version;
 
+    @JsonIgnore
     @CreatedBy
     @Column(updatable = false)
     private String createdBy;
 
+    @JsonIgnore
     @CreatedDate
     @Column(updatable = false)
     private Instant createdDate;
 
+    @JsonIgnore
     @LastModifiedBy
     private String modifiedBy;
 
+    @JsonIgnore
     @LastModifiedDate
     private Instant modifiedDate;
 }

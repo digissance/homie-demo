@@ -1,3 +1,6 @@
+logging:
+  level:
+    web: DEBUG
 spring:
   sql:
     init:
@@ -17,6 +20,10 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 management:
   endpoints:
     web:
