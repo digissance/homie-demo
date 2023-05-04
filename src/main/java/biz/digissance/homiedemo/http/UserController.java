@@ -39,10 +39,4 @@ public class UserController {
 
         return ResponseEntity.ok(spaceEntityRepository.findByOwnerId(ownerId));
     }
-
-    @GetMapping
-    public final ResponseEntity<List<UserEntity>> getAllUsers() {
-
-        return ResponseEntity.ok(repository.findAll());
-    }
 }
