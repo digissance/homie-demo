@@ -9,4 +9,6 @@ public interface SpaceEntityRepository extends JpaRepository<SpaceEntity, Long> 
     List<SpaceEntity> findByOwnerId(long ownerId);
 
     Optional<SpaceEntity> findByIdAndPathStartingWith(long ownerId, final String startOfPath);
+
+    List<SpaceEntity> findByOwnerIdentifier(String ownerId);
 }

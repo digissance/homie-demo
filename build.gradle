@@ -30,6 +30,7 @@ repositories {
 
 ext {
     set('testcontainersVersion', "1.18.0")
+    set('cucumberVersion', "7.0.0")
 }
 
 dependencies {
@@ -49,6 +50,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:postgresql'
+    testImplementation("io.cucumber:cucumber-junit-platform-engine:$cucumberVersion")
+    testImplementation("io.cucumber:cucumber-java:$cucumberVersion")
+    testImplementation("io.cucumber:cucumber-spring:$cucumberVersion")
 
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
@@ -75,6 +79,16 @@ bootBuildImage {
             password = dockerPassword
         }
     }
+    buildCache {
+        volume {
+            name = "cache-${rootProject.name}.build"
+        }
+    }
+    launchCache {
+        volume {
+            name = "cache-${rootProject.name}.launch"
+        }
+    }
 }
 
 jib {
@@ -86,4 +100,27 @@ jib {
 
 task getCurrentVersion {
     print "${semver.version}-$gitHash"
+}
+
+testlogger {
+    theme 'mocha'
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation, runtimeOnly
+    }
+}
+
+task cucumber() {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = ['--plugin', 'pretty', '--glue', 'biz.digissance.homiedemo.bdd',
+                    '--tags', System.getProperty('cucumber.tags', 'not @WorkInProgress'),
+                    'src/test/resources/features']
+        }
+    }
 }

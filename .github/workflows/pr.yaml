@@ -49,6 +49,11 @@ jobs:
         with:
           arguments: build
 
+      - name: Run cucumber tests
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: cucumber
+
       - name: Retrieve gitShortHash
         id: gitShortHash
         run: |

@@ -1,4 +1,4 @@
-version: "3.9"
+#version: "3.9"
 
 services:
 
@@ -7,18 +7,23 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
-      - www.backend.com
+      - homie-demo
     ports:
       - "8080:8080"
 
   database:
-    image: 'postgres:13.1-alpine'
+    image: 'postgres:14.1-alpine'
     environment:
       POSTGRES_USER: homie-demo-db
       POSTGRES_PASSWORD: "Postgr@s321!"
     ports:
       - "5432:5432"
-  www.backend.com:
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  homie-demo:
     image: "ghcr.io/digissance/homie-demo:${TAG}"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/homie-demo-db
@@ -26,7 +31,6 @@ services:
       SPRING_DATASOURCE_PASSWORD: "Postgr@s321!"
       SPRING_PROFILES_ACTIVE: dev
       SECURITY_DEBUG_ENABLED: "true"
-#    ports:
-#      - "8080:8080"
     depends_on:
-      - database
+      database:
+        condition: service_healthy

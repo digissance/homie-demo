@@ -5,9 +5,12 @@ import biz.digissance.homiedemo.domain.ItemEntity;
 import biz.digissance.homiedemo.domain.RoomEntity;
 import biz.digissance.homiedemo.domain.SpaceEntity;
 import biz.digissance.homiedemo.domain.StorageEntity;
-import biz.digissance.homiedemo.http.CreateElementRequest;
-import biz.digissance.homiedemo.http.CreateSpaceRequest;
 import biz.digissance.homiedemo.http.ElementMapper;
+import biz.digissance.homiedemo.http.dto.CreateElementRequest;
+import biz.digissance.homiedemo.http.dto.CreateSpaceRequest;
+import biz.digissance.homiedemo.http.dto.ElementDto;
+import biz.digissance.homiedemo.http.dto.RoomOrStorageDto;
+import biz.digissance.homiedemo.http.dto.SpaceDto;
 import biz.digissance.homiedemo.repository.ElementEntityRepository;
 import biz.digissance.homiedemo.repository.RoomEntityRepository;
 import biz.digissance.homiedemo.repository.SpaceEntityRepository;
@@ -44,8 +47,10 @@ public class SpaceServiceImpl implements SpaceService {
     }
 
     @Override
-    public SpaceEntity createSpace(final CreateSpaceRequest request) {
-        return spaceEntityRepository.save(mapper.toSpaceEntity(request));
+    public SpaceDto createSpace(final CreateSpaceRequest request) {
+        final var spaceEntity = mapper.toSpaceEntity(request);
+        final var createdSpace = spaceEntityRepository.save(spaceEntity);
+        return mapper.toSpaceDto(createdSpace);
     }
 
     @Override
@@ -68,37 +73,25 @@ public class SpaceServiceImpl implements SpaceService {
     }
 
     private void handle(SpaceEntity space, Map<String, ElementDto> e) {
-        final var spaceDto = new SpaceDto();
-        spaceDto.setName(space.getName());
-        spaceDto.setDescription(space.getDescription());
-        spaceDto.setPath(space.getPath());
+        final var spaceDto = mapper.toSpaceDto(space);
         e.put(space.getPath(), spaceDto);
     }
 
     private void handle(RoomEntity room, Map<String, ElementDto> e) {
-        final var roomDto = new RoomDto();
-        roomDto.setName(room.getName());
-        roomDto.setDescription(room.getDescription());
-        roomDto.setPath(room.getPath());
+        final var roomDto = mapper.toRoomDto(room);
         e.put(room.getPath(), roomDto);
         ((SpaceDto) e.get(room.getSpace().getPath())).getRooms().add(roomDto);
     }
 
     private void handle(StorageEntity storage, Map<String, ElementDto> e) {
-        final var storageDto = new StorageDto();
-        storageDto.setName(storage.getName());
-        storageDto.setDescription(storage.getDescription());
-        storageDto.setPath(storage.getPath());
+        final var storageDto = mapper.toStorageDto(storage);
         e.put(storage.getPath(), storageDto);
-        ((RoomOrStorageDto) e.get(storage.getParent().getPath())).getStuff().add(storageDto);
+        ((RoomOrStorageDto) e.get(storage.getParent().getPath())).getElements().add(storageDto);
     }
 
     private void handle(ItemEntity item, Map<String, ElementDto> e) {
-        final var itemDto = new ItemDto();
-        itemDto.setName(item.getName());
-        itemDto.setDescription(item.getDescription());
-        itemDto.setPath(item.getPath());
+        final var itemDto = mapper.toItemDto(item);
         e.put(item.getPath(), itemDto);
-        ((RoomOrStorageDto) e.get(item.getParent().getPath())).getStuff().add(itemDto);
+        ((RoomOrStorageDto) e.get(item.getParent().getPath())).getElements().add(itemDto);
     }
 }

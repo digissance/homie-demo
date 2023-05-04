@@ -1,10 +1,11 @@
-package biz.digissance.homiedemo.http;
+package biz.digissance.homiedemo.http.user;
 
 import biz.digissance.homiedemo.domain.SpaceEntity;
-import biz.digissance.homiedemo.domain.UserEntity;
+import biz.digissance.homiedemo.http.dto.UserDto;
 import biz.digissance.homiedemo.repository.SpaceEntityRepository;
-import biz.digissance.homiedemo.repository.UserEntityRepository;
+import biz.digissance.homiedemo.service.UserService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,25 +19,28 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserEntityRepository repository;
+    private final UserService service;
     private final SpaceEntityRepository spaceEntityRepository;
 
-    public UserController(final UserEntityRepository repository,
+    public UserController(final UserService service,
                           final SpaceEntityRepository spaceEntityRepository) {
-        this.repository = repository;
+        this.service = service;
         this.spaceEntityRepository = spaceEntityRepository;
     }
 
     @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody UserEntity user, UriComponentsBuilder uri) {
-        repository.save(user);
-        return ResponseEntity.created(uri.build().toUri()).build();
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto request, UriComponentsBuilder uri) {
+        final var user = service.create(request.getName());
+        return ResponseEntity.created(uri
+                .path("/users/{id}")
+                .buildAndExpand(Map.of("id", user.getIdentifier()))
+                .toUri()).body(user);
     }
 
     @GetMapping("/{ownerId}/spaces")
-    public final ResponseEntity<List<SpaceEntity>> getOwnerSpaces(final @PathVariable long ownerId,
+    public final ResponseEntity<List<SpaceEntity>> getOwnerSpaces(final @PathVariable String ownerId,
                                                                   final UriComponentsBuilder uri) {
 
-        return ResponseEntity.ok(spaceEntityRepository.findByOwnerId(ownerId));
+        return ResponseEntity.ok(spaceEntityRepository.findByOwnerIdentifier(ownerId));
     }
 }
