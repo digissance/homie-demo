@@ -1,4 +1,4 @@
-package biz.digissance.homiedemo.http;
+package biz.digissance.homiedemo.http.user;
 
 import biz.digissance.homiedemo.domain.SpaceEntity;
 import biz.digissance.homiedemo.domain.UserEntity;
@@ -34,9 +34,9 @@ public class UserController {
     }
 
     @GetMapping("/{ownerId}/spaces")
-    public final ResponseEntity<List<SpaceEntity>> getOwnerSpaces(final @PathVariable long ownerId,
+    public final ResponseEntity<List<SpaceEntity>> getOwnerSpaces(final @PathVariable String ownerId,
                                                                   final UriComponentsBuilder uri) {
 
-        return ResponseEntity.ok(spaceEntityRepository.findByOwnerId(ownerId));
+        return ResponseEntity.ok(spaceEntityRepository.findByOwnerIdentifier(ownerId));
     }
 }

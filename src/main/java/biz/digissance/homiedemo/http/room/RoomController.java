@@ -1,8 +1,10 @@
-package biz.digissance.homiedemo.http;
+package biz.digissance.homiedemo.http.room;
 
 import biz.digissance.homiedemo.domain.ItemEntity;
-import biz.digissance.homiedemo.domain.RoomEntity;
+import biz.digissance.homiedemo.domain.StorageEntity;
 import biz.digissance.homiedemo.domain.StuffEntity;
+import biz.digissance.homiedemo.http.ElementMapper;
+import biz.digissance.homiedemo.http.dto.CreateElementRequest;
 import biz.digissance.homiedemo.repository.ElementEntityRepository;
 import biz.digissance.homiedemo.repository.StuffEntityRepository;
 import java.util.List;
@@ -16,16 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/storage")
-public class StorageController {
+@RequestMapping("/rooms")
+public class RoomController {
 
     private final ElementEntityRepository repository;
     private final StuffEntityRepository stuffEntityRepository;
     private final ElementMapper mapper;
 
-    public StorageController(final ElementEntityRepository repository,
-                             final StuffEntityRepository stuffEntityRepository,
-                             final ElementMapper mapper) {
+    public RoomController(final ElementEntityRepository repository,
+                          final StuffEntityRepository stuffEntityRepository,
+                          final ElementMapper mapper) {
         this.repository = repository;
         this.stuffEntityRepository = stuffEntityRepository;
         this.mapper = mapper;
@@ -41,10 +43,10 @@ public class StorageController {
     }
 
     @PostMapping("/{id}/storage")
-    public final ResponseEntity<RoomEntity> createStorage(final @PathVariable long id,
-                                                          final @RequestBody CreateElementRequest request,
-                                                          final UriComponentsBuilder uri) {
-        final var element = repository.save(mapper.toRoomEntity(id, request));
+    public final ResponseEntity<StorageEntity> createStorage(final @PathVariable long id,
+                                                             final @RequestBody CreateElementRequest request,
+                                                             final UriComponentsBuilder uri) {
+        final var element = repository.save(mapper.toStorageEntity(id, request));
         return ResponseEntity.created(uri.build().toUri())
                 .body(element);
     }

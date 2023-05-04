@@ -5,6 +5,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ElementEntityRepository extends JpaRepository<ElementEntity, Long> {
-    //    List<ElementEntity> findByOwner_IdAndParentIsNull(long ownerId);
+
     List<ElementEntity> findByPathStartingWith(final String startOfPath);
 }

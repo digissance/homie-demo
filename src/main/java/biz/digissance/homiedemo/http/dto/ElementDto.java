@@ -1,14 +1,14 @@
-package biz.digissance.homiedemo.service;
+package biz.digissance.homiedemo.http.dto;
 
-import biz.digissance.homiedemo.domain.ItemEntity;
-import biz.digissance.homiedemo.domain.RoomEntity;
-import biz.digissance.homiedemo.domain.SpaceEntity;
-import biz.digissance.homiedemo.domain.StorageEntity;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
+@SuperBuilder
+@NoArgsConstructor
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = SpaceDto.class, name = "Space"),

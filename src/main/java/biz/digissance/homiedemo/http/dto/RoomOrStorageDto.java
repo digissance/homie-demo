@@ -1,4 +1,4 @@
-package biz.digissance.homiedemo.service;
+package biz.digissance.homiedemo.http.dto;
 
 import java.util.Set;
 
