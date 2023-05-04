@@ -7,13 +7,7 @@ import io.cucumber.java.DataTableType;
 import io.cucumber.java.ParameterType;
 import java.util.Map;
 
-public class ParameterTypes {
-
-    private final UserService userService;
-
-    public ParameterTypes(final UserService userService) {
-        this.userService = userService;
-    }
+public record ParameterTypes(UserService userService) {
 
     @ParameterType(".*")
     public UserDto user(String name) {

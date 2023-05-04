@@ -18,6 +18,7 @@ import biz.digissance.homiedemo.repository.SpaceEntityRepository;
 import biz.digissance.homiedemo.repository.UserEntityRepository;
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.SubclassExhaustiveStrategy;
@@ -42,10 +43,13 @@ public abstract class ElementMapper {
 
     public abstract SpaceEntity toSpaceEntity(CreateSpaceRequest space);
 
+    @Mapping(target = "rooms", ignore = true)
     public abstract SpaceDto toSpaceDto(final SpaceEntity space);
 
+    @Mapping(target = "elements", ignore = true)
     public abstract RoomDto toRoomDto(final RoomEntity room);
 
+    @Mapping(target = "elements", ignore = true)
     public abstract StorageDto toStorageDto(final StorageEntity storage);
 
     public abstract ItemDto toItemDto(final ItemEntity item);

@@ -6,7 +6,6 @@ import lombok.ToString;
 
 @Data
 @Builder
-//@ToString
 public class UserDto {
 
     private String name;

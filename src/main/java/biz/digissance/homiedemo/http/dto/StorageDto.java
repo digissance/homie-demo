@@ -5,13 +5,16 @@ import java.util.Set;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class StorageDto extends StuffDto implements RoomOrStorageDto {
 
     @Builder.Default
-    private Set<StuffDto> stuff = new HashSet<>();
+    @ToString.Exclude
+    private Set<StuffDto> elements = new HashSet<>();
 }
