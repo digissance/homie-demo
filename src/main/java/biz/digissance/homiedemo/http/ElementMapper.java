@@ -46,10 +46,10 @@ public abstract class ElementMapper {
     @Mapping(target = "rooms", ignore = true)
     public abstract SpaceDto toSpaceDto(final SpaceEntity space);
 
-    @Mapping(target = "elements", ignore = true)
+    @Mapping(target = "stuff", ignore = true)
     public abstract RoomDto toRoomDto(final RoomEntity room);
 
-    @Mapping(target = "elements", ignore = true)
+    @Mapping(target = "stuff", ignore = true)
     public abstract StorageDto toStorageDto(final StorageEntity storage);
 
     public abstract ItemDto toItemDto(final ItemEntity item);

@@ -89,12 +89,12 @@ public class SpaceServiceImpl implements SpaceService {
     private void handle(StorageEntity storage, Map<String, ElementDto> e) {
         final var storageDto = mapper.toStorageDto(storage);
         e.put(storage.getPath(), storageDto);
-        ((RoomOrStorageDto) e.get(storage.getParent().getPath())).getElements().add(storageDto);
+        ((RoomOrStorageDto) e.get(storage.getParent().getPath())).getStuff().add(storageDto);
     }
 
     private void handle(ItemEntity item, Map<String, ElementDto> e) {
         final var itemDto = mapper.toItemDto(item);
         e.put(item.getPath(), itemDto);
-        ((RoomOrStorageDto) e.get(item.getParent().getPath())).getElements().add(itemDto);
+        ((RoomOrStorageDto) e.get(item.getParent().getPath())).getStuff().add(itemDto);
     }
 }
