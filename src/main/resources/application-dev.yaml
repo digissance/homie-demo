@@ -1,11 +1,16 @@
+logging:
+  level:
+    web: DEBUG
 spring:
   sql:
     init:
       mode: always
   datasource:
-    url: "${SPRING_DATASOURCE_URL}"
-    username: "${SPRING_DATASOURCE_USERNAME}"
-    password: "${SPRING_DATASOURCE_PASSWORD}"
+    generate-unique-name: false
+    name: homie-demo-db
+    url: "${SPRING_DATASOURCE_URL:jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE}"
+    username: "${SPRING_DATASOURCE_USERNAME:SA}"
+    password: "${SPRING_DATASOURCE_PASSWORD:SA}"
     hikari:
       maximum-pool-size: ${DB_POOL_SIZE:2}
   application:
@@ -15,6 +20,10 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 management:
   endpoints:
     web:

@@ -5,6 +5,7 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +30,7 @@ public class RoomEntity extends ElementEntity implements RoomOrStorage {
     @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy = "parent")
-    private Set<StuffEntity> elements;
+    private Set<StuffEntity> elements = new HashSet<>();
 
     @Override
     protected String internalCalculatePath() {
