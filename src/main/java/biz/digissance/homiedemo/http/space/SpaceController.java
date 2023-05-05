@@ -3,6 +3,7 @@ package biz.digissance.homiedemo.http.space;
 import biz.digissance.homiedemo.domain.RoomEntity;
 import biz.digissance.homiedemo.http.dto.CreateElementRequest;
 import biz.digissance.homiedemo.http.dto.CreateSpaceRequest;
+import biz.digissance.homiedemo.http.dto.RoomDto;
 import biz.digissance.homiedemo.http.dto.SpaceDto;
 import biz.digissance.homiedemo.service.SpaceService;
 import java.util.List;
@@ -37,12 +38,14 @@ public class SpaceController {
     }
 
     @PostMapping("/{id}/rooms")
-    public final ResponseEntity<RoomEntity> createRoom(final @PathVariable long id,
-                                                       final @RequestBody CreateElementRequest request,
-                                                       final UriComponentsBuilder uri) {
-        final var element = service.createRoom(id, request);
-        return ResponseEntity.created(uri.build().toUri())
-                .body(element);
+    public final ResponseEntity<RoomDto> createRoom(final @PathVariable long id,
+                                                    final @RequestBody CreateElementRequest request,
+                                                    final UriComponentsBuilder uri) {
+        final var room = service.createRoom(id, request);
+        return ResponseEntity.created(uri
+                .path("/rooms/{id}")
+                .buildAndExpand(Map.of("id", room.getId()))
+                .toUri()).body(room);
     }
 
     @GetMapping("/{id}/rooms")

@@ -8,7 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.PrePersist;
-import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,8 +42,4 @@ public abstract class ElementEntity extends BaseEntity {
     }
 
     protected abstract String internalCalculatePath();
-
-    public void visit(Consumer<? super ElementEntity> visitor) {
-        visitor.accept(this);
-    }
 }

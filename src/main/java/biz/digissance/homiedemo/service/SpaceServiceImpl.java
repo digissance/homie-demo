@@ -9,6 +9,7 @@ import biz.digissance.homiedemo.http.ElementMapper;
 import biz.digissance.homiedemo.http.dto.CreateElementRequest;
 import biz.digissance.homiedemo.http.dto.CreateSpaceRequest;
 import biz.digissance.homiedemo.http.dto.ElementDto;
+import biz.digissance.homiedemo.http.dto.RoomDto;
 import biz.digissance.homiedemo.http.dto.RoomOrStorageDto;
 import biz.digissance.homiedemo.http.dto.SpaceDto;
 import biz.digissance.homiedemo.repository.ElementEntityRepository;
@@ -54,8 +55,10 @@ public class SpaceServiceImpl implements SpaceService {
     }
 
     @Override
-    public RoomEntity createRoom(final long spaceId, final CreateElementRequest request) {
-        return roomEntityRepository.save(mapper.toRoomEntity(spaceId, request));
+    public RoomDto createRoom(final long spaceId, final CreateElementRequest request) {
+        final var entity = mapper.toRoomEntity(spaceId, request);
+        final var savedRoom = roomEntityRepository.save(entity);
+        return mapper.toRoomDto(savedRoom);
     }
 
     @Override

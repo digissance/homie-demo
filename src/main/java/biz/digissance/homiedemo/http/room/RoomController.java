@@ -1,13 +1,13 @@
 package biz.digissance.homiedemo.http.room;
 
-import biz.digissance.homiedemo.domain.ItemEntity;
-import biz.digissance.homiedemo.domain.StorageEntity;
 import biz.digissance.homiedemo.domain.StuffEntity;
-import biz.digissance.homiedemo.http.ElementMapper;
 import biz.digissance.homiedemo.http.dto.CreateElementRequest;
-import biz.digissance.homiedemo.repository.ElementEntityRepository;
+import biz.digissance.homiedemo.http.dto.ItemDto;
+import biz.digissance.homiedemo.http.dto.StorageDto;
 import biz.digissance.homiedemo.repository.StuffEntityRepository;
+import biz.digissance.homiedemo.service.RoomService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,34 +21,35 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("/rooms")
 public class RoomController {
 
-    private final ElementEntityRepository repository;
     private final StuffEntityRepository stuffEntityRepository;
-    private final ElementMapper mapper;
+    private final RoomService roomService;
 
-    public RoomController(final ElementEntityRepository repository,
-                          final StuffEntityRepository stuffEntityRepository,
-                          final ElementMapper mapper) {
-        this.repository = repository;
+    public RoomController(final StuffEntityRepository stuffEntityRepository,
+                          final RoomService roomService) {
         this.stuffEntityRepository = stuffEntityRepository;
-        this.mapper = mapper;
+        this.roomService = roomService;
     }
 
     @PostMapping("/{id}/items")
-    public final ResponseEntity<ItemEntity> createItem(final @PathVariable long id,
-                                                       final @RequestBody CreateElementRequest request,
-                                                       final UriComponentsBuilder uri) {
-        final var element = repository.save(mapper.toItemEntity(id, request));
-        return ResponseEntity.created(uri.build().toUri())
-                .body(element);
+    public final ResponseEntity<ItemDto> createItem(final @PathVariable long id,
+                                                    final @RequestBody CreateElementRequest request,
+                                                    final UriComponentsBuilder uri) {
+        final var item = roomService.createItem(id, request);
+        return ResponseEntity.created(uri
+                .path("/items/{id}")
+                .buildAndExpand(Map.of("id", item.getId()))
+                .toUri()).body(item);
     }
 
     @PostMapping("/{id}/storage")
-    public final ResponseEntity<StorageEntity> createStorage(final @PathVariable long id,
-                                                             final @RequestBody CreateElementRequest request,
-                                                             final UriComponentsBuilder uri) {
-        final var element = repository.save(mapper.toStorageEntity(id, request));
-        return ResponseEntity.created(uri.build().toUri())
-                .body(element);
+    public final ResponseEntity<StorageDto> createStorage(final @PathVariable long id,
+                                                          final @RequestBody CreateElementRequest request,
+                                                          final UriComponentsBuilder uri) {
+        final var storage = roomService.createStorage(id, request);
+        return ResponseEntity.created(uri
+                .path("/storage/{id}")
+                .buildAndExpand(Map.of("id", storage.getId()))
+                .toUri()).body(storage);
     }
 
     @GetMapping("/{id}/elements")

@@ -25,7 +25,7 @@ public class UserEntity extends BaseEntity {
     @Id
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
-    @Column(length = 36, nullable = false, updatable = false)
+    @Column(length = 36, nullable = false, updatable = false, unique = true)
     private String identifier;
     private String name;
 }

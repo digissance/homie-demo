@@ -2,7 +2,7 @@ package biz.digissance.homiedemo.http.dto;
 
 import java.util.HashSet;
 import java.util.Set;
-import lombok.AllArgsConstructor;
+import java.util.function.Consumer;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,4 +20,10 @@ public class SpaceDto extends ElementDto {
     @Builder.Default
     @ToString.Exclude
     private Set<RoomDto> rooms = new HashSet<>();
+
+    @Override
+    public void visit(final Consumer<ElementDto> visitor) {
+        visitor.accept(this);
+        rooms.forEach(p->p.visit(visitor));
+    }
 }
