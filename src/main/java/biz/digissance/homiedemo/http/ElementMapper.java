@@ -15,7 +15,6 @@ import biz.digissance.homiedemo.http.dto.StorageDto;
 import biz.digissance.homiedemo.http.dto.UserDto;
 import biz.digissance.homiedemo.repository.ElementEntityRepository;
 import biz.digissance.homiedemo.repository.SpaceEntityRepository;
-import biz.digissance.homiedemo.repository.UserEntityRepository;
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -31,16 +30,16 @@ import org.springframework.beans.factory.annotation.Autowired;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
 public abstract class ElementMapper {
-    @Autowired
-    private UserEntityRepository userRepository;
 
     @Autowired
     private SpaceEntityRepository spaceEntityRepository;
     @Autowired
     private ElementEntityRepository elementEntityRepository;
 
+    @Mapping(target = "password", ignore = true)
     public abstract UserDto toUserDto(final UserEntity user);
 
+    @Mapping(target = "owner", ignore = true)
     public abstract SpaceEntity toSpaceEntity(CreateSpaceRequest space);
 
     @Mapping(target = "rooms", ignore = true)
@@ -53,10 +52,6 @@ public abstract class ElementMapper {
     public abstract StorageDto toStorageDto(final StorageEntity storage);
 
     public abstract ItemDto toItemDto(final ItemEntity item);
-
-    public UserEntity map(String userIdentifier) {
-        return userRepository.findByIdentifier(userIdentifier).orElseThrow();
-    }
 
     public RoomEntity toRoomEntity(final long parentId, final CreateElementRequest request) {
         final var parent = spaceEntityRepository.findById(parentId).orElseThrow();

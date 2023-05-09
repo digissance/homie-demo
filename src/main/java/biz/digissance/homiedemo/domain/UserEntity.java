@@ -27,5 +27,8 @@ public class UserEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
     @Column(length = 36, nullable = false, updatable = false, unique = true)
     private String identifier;
-    private String name;
+    @Column(length = 36, nullable = false, updatable = false, unique = true)
+    private String username;
+    @Column(nullable = false)
+    private String password;
 }

@@ -6,5 +6,5 @@ import java.util.Optional;
 public interface UserService {
     Optional<UserDto> findByName(String name);
 
-    UserDto create(String name);
+    UserDto create(final String name, final String password);
 }

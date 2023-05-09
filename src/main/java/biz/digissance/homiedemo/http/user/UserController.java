@@ -30,7 +30,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto request, UriComponentsBuilder uri) {
-        final var user = service.create(request.getName());
+        final var user = service.create(request.getUsername(),request.getPassword());
         return ResponseEntity.created(uri
                 .path("/users/{id}")
                 .buildAndExpand(Map.of("id", user.getIdentifier()))
