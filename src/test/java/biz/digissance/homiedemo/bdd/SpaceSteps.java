@@ -2,7 +2,6 @@ package biz.digissance.homiedemo.bdd;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import biz.digissance.homiedemo.http.dto.CreateElementRequest;
 import biz.digissance.homiedemo.http.dto.ElementDto;
 import biz.digissance.homiedemo.http.dto.ItemDto;
 import biz.digissance.homiedemo.http.dto.SpaceDto;
@@ -10,11 +9,19 @@ import biz.digissance.homiedemo.http.dto.StorageDto;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 
 public class SpaceSteps {
 
@@ -127,5 +134,29 @@ public class SpaceSteps {
                 .containsExactlyInAnyOrderElementsOf(expectedItems.stream()
                         .map(ItemRequest::name)
                         .collect(Collectors.toList()));
+    }
+
+    @When("user logs in")
+    public void userLogsIn() {
+        final var user = myCache.getCurrentUser();
+        restTemplate.getRestTemplate().getInterceptors()
+                .add(new BasicAuthenticationInterceptor(user.getUsername(), user.getPassword()));
+        final var response = restTemplate.exchange("/api/auth/token", HttpMethod.POST, null, Void.class);
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+        restTemplate.getRestTemplate().getInterceptors()
+                .add(new ClientHttpRequestInterceptor() {
+                    @Override
+                    public ClientHttpResponse intercept(final HttpRequest request, final byte[] body,
+                                                        final ClientHttpRequestExecution execution) throws IOException {
+                        final var res = response;
+                        HttpHeaders headers = request.getHeaders();
+                        res.getHeaders().get("Set-Cookie").forEach(c -> {
+//                            final var cookieParts = c.split("=");
+                            headers.add(HttpHeaders.COOKIE, c);
+                        });
+                        return execution.execute(request, body);
+                    }
+                });
+        restTemplate.getRestTemplate().getInterceptors().removeIf(p -> p instanceof BasicAuthenticationInterceptor);
     }
 }

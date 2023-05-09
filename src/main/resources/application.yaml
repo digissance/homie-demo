@@ -25,3 +25,13 @@ management:
       show-details: ALWAYS
       probes:
         enabled: true
+
+app:
+  security:
+    cookie:
+      secured: true
+    jwt:
+      token_age: 60
+      key: "${APP_JWT_KEY}"
+    debug:
+      enabled: false

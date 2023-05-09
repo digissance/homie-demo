@@ -1,6 +1,5 @@
 package biz.digissance.homiedemo.bdd;
 
-import biz.digissance.homiedemo.http.dto.RoomDto;
 import biz.digissance.homiedemo.http.dto.RoomOrStorageDto;
 import biz.digissance.homiedemo.http.dto.SpaceDto;
 import biz.digissance.homiedemo.http.dto.UserDto;
@@ -21,7 +20,11 @@ public class MyCache {
     }
 
     public UserDto findUserByNameOrCreate(final String name) {
-        return userService.findByName(name).orElseGet(() -> userService.create(name));
+        final var password = "123456";
+        return userService.findByName(name).orElseGet(() -> userService.create(name, password))
+                .toBuilder()
+                .password(password)
+                .build();
     }
 
     public UserDto getCurrentUser() {

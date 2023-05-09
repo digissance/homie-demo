@@ -15,6 +15,7 @@ import biz.digissance.homiedemo.http.dto.SpaceDto;
 import biz.digissance.homiedemo.repository.ElementEntityRepository;
 import biz.digissance.homiedemo.repository.RoomEntityRepository;
 import biz.digissance.homiedemo.repository.SpaceEntityRepository;
+import biz.digissance.homiedemo.repository.UserEntityRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,16 +26,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class SpaceServiceImpl implements SpaceService {
+    private final UserEntityRepository userEntityRepository;
     private final SpaceEntityRepository spaceEntityRepository;
     private final ElementEntityRepository elementEntityRepository;
     private final RoomEntityRepository roomEntityRepository;
     private final ElementMapper mapper;
     private final Map<Class<? extends ElementEntity>, BiConsumer<ElementEntity, Map<String, ElementDto>>> consumerMap;
 
-    public SpaceServiceImpl(final SpaceEntityRepository spaceEntityRepository,
+    public SpaceServiceImpl(final UserEntityRepository userEntityRepository,
+                            final SpaceEntityRepository spaceEntityRepository,
                             final ElementEntityRepository elementEntityRepository,
                             final RoomEntityRepository roomEntityRepository,
                             final ElementMapper mapper) {
+        this.userEntityRepository = userEntityRepository;
         this.spaceEntityRepository = spaceEntityRepository;
         this.elementEntityRepository = elementEntityRepository;
         this.roomEntityRepository = roomEntityRepository;
@@ -48,8 +52,9 @@ public class SpaceServiceImpl implements SpaceService {
     }
 
     @Override
-    public SpaceDto createSpace(final CreateSpaceRequest request) {
+    public SpaceDto createSpace(final CreateSpaceRequest request, final String owner) {
         final var spaceEntity = mapper.toSpaceEntity(request);
+        spaceEntity.setOwner(userEntityRepository.findByIdentifier(owner).orElseThrow());
         final var createdSpace = spaceEntityRepository.save(spaceEntity);
         return mapper.toSpaceDto(createdSpace);
     }

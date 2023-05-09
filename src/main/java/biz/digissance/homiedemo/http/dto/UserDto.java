@@ -5,9 +5,12 @@ import lombok.Data;
 import lombok.ToString;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 public class UserDto {
 
-    private String name;
     private String identifier;
+    private String username;
+    //    @JsonIgnore
+    @ToString.Exclude
+    private String password;
 }

@@ -11,7 +11,6 @@ public record SpaceRequest(TestRestTemplate restTemplate, String name, String de
                 CreateSpaceRequest.builder()
                         .name(name)
                         .description(description)
-                        .owner(user.getIdentifier())
                         .build()
                 , SpaceDto.class);
     }

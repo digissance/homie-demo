@@ -1,6 +1,11 @@
 logging:
   level:
-    web: DEBUG
+    web:
+      DEBUG
+    org:
+      hibernate.orm.jdbc.bind: TRACE
+      springframework:
+        security: TRACE
 spring:
   sql:
     init:
@@ -34,3 +39,12 @@ management:
       show-details: ALWAYS
       probes:
         enabled: true
+app:
+  security:
+    cookie:
+      secured: false
+    jwt:
+      token_age: 5
+      key: 9faa372517ac1d389758d3750fc07acf00f542277f26fec1ce4593e93f64e443
+    debug:
+      enabled: true

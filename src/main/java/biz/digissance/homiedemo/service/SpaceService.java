@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface SpaceService {
 
-    SpaceDto createSpace(CreateSpaceRequest request);
+    SpaceDto createSpace(final CreateSpaceRequest request, final String owner);
 
-    RoomDto createRoom(long spaceId, CreateElementRequest request);
+    RoomDto createRoom(final long spaceId, final CreateElementRequest request);
 
-    List<RoomEntity> getRooms(long spaceId);
+    List<RoomEntity> getRooms(final long spaceId);
 
-    SpaceDto getSpaceTree(long spaceId);
+    SpaceDto getSpaceTree(final long spaceId);
 }
