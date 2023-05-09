@@ -9,4 +9,6 @@ public interface RoomOrStorage {
     String getPath();
 
     Set<StuffEntity> getElements();
+
+    SpaceEntity getSpace();
 }

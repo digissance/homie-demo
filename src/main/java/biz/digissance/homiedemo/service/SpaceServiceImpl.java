@@ -31,7 +31,7 @@ public class SpaceServiceImpl implements SpaceService {
     private final ElementEntityRepository elementEntityRepository;
     private final RoomEntityRepository roomEntityRepository;
     private final ElementMapper mapper;
-    private final Map<Class<? extends ElementEntity>, BiConsumer<ElementEntity, Map<String, ElementDto>>> consumerMap;
+    private final Map<Class<? extends ElementEntity>, BiConsumer<ElementEntity, Map<Long, ElementDto>>> consumerMap;
 
     public SpaceServiceImpl(final UserEntityRepository userEntityRepository,
                             final SpaceEntityRepository spaceEntityRepository,
@@ -73,33 +73,33 @@ public class SpaceServiceImpl implements SpaceService {
 
     @Override
     public SpaceDto getSpaceTree(final long spaceId) {
-        final var space = spaceEntityRepository.findById(spaceId).orElseThrow();
-        Map<String, ElementDto> elementDtoMap = new HashMap<>();
-        elementEntityRepository.findByPathStartingWith(space.getPath())
+//        final var space = spaceEntityRepository.findById(spaceId).orElseThrow();
+        Map<Long, ElementDto> elementDtoMap = new HashMap<>();
+        elementEntityRepository.findByIdOrSpaceId(spaceId, spaceId)
                 .forEach(p -> consumerMap.get(p.getClass()).accept(p, elementDtoMap));
-        return (SpaceDto) elementDtoMap.get(space.getPath());
+        return (SpaceDto) elementDtoMap.get(spaceId);
     }
 
-    private void handle(SpaceEntity space, Map<String, ElementDto> e) {
+    private void handle(SpaceEntity space, Map<Long, ElementDto> e) {
         final var spaceDto = mapper.toSpaceDto(space);
-        e.put(space.getPath(), spaceDto);
+        e.put(space.getId(), spaceDto);
     }
 
-    private void handle(RoomEntity room, Map<String, ElementDto> e) {
+    private void handle(RoomEntity room, Map<Long, ElementDto> e) {
         final var roomDto = mapper.toRoomDto(room);
-        e.put(room.getPath(), roomDto);
-        ((SpaceDto) e.get(room.getSpace().getPath())).getRooms().add(roomDto);
+        e.put(room.getId(), roomDto);
+        ((SpaceDto) e.get(room.getSpace().getId())).getRooms().add(roomDto);
     }
 
-    private void handle(StorageEntity storage, Map<String, ElementDto> e) {
+    private void handle(StorageEntity storage, Map<Long, ElementDto> e) {
         final var storageDto = mapper.toStorageDto(storage);
-        e.put(storage.getPath(), storageDto);
-        ((RoomOrStorageDto) e.get(storage.getParent().getPath())).getStuff().add(storageDto);
+        e.put(storage.getId(), storageDto);
+        ((RoomOrStorageDto) e.get(storage.getParent().getId())).getStuff().add(storageDto);
     }
 
-    private void handle(ItemEntity item, Map<String, ElementDto> e) {
+    private void handle(ItemEntity item, Map<Long, ElementDto> e) {
         final var itemDto = mapper.toItemDto(item);
-        e.put(item.getPath(), itemDto);
-        ((RoomOrStorageDto) e.get(item.getParent().getPath())).getStuff().add(itemDto);
+        e.put(item.getId(), itemDto);
+        ((RoomOrStorageDto) e.get(item.getParent().getId())).getStuff().add(itemDto);
     }
 }

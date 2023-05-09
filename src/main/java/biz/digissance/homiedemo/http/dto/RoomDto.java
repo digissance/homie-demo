@@ -17,6 +17,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 public class RoomDto extends ElementDto implements RoomOrStorageDto, SomethingHoldingElements {
 
+    private long spaceId;
+
     @Builder.Default
     @ToString.Exclude
     private Set<StuffDto> stuff = new HashSet<>();

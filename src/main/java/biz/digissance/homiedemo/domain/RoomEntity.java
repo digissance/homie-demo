@@ -1,6 +1,5 @@
 package biz.digissance.homiedemo.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -22,18 +21,12 @@ import lombok.experimental.SuperBuilder;
 @DiscriminatorValue("room")
 public class RoomEntity extends ElementEntity implements RoomOrStorage {
 
-    @ManyToOne//(optional = false)
-    @JsonIgnore
-    @ToString.Exclude
-    private SpaceEntity space;
-
-    @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy = "parent")
     private Set<StuffEntity> elements = new HashSet<>();
 
     @Override
     protected String internalCalculatePath() {
-        return this.space.getPath().concat("/").concat(this.getName());
+        return this.getSpace().getPath().concat("/").concat(this.getName());
     }
 }

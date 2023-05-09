@@ -39,19 +39,24 @@ public abstract class ElementMapper {
     @Mapping(target = "password", ignore = true)
     public abstract UserDto toUserDto(final UserEntity user);
 
-    @Mapping(target = "owner", ignore = true)
-    public abstract SpaceEntity toSpaceEntity(CreateSpaceRequest space);
-
     @Mapping(target = "rooms", ignore = true)
     public abstract SpaceDto toSpaceDto(final SpaceEntity space);
 
     @Mapping(target = "stuff", ignore = true)
+    @Mapping(target = "spaceId", expression = "java(room.getSpace().getId())")
     public abstract RoomDto toRoomDto(final RoomEntity room);
 
     @Mapping(target = "stuff", ignore = true)
+    @Mapping(target = "parentId", expression = "java(storage.getParent().getId())")
+    @Mapping(target = "spaceId", expression = "java(storage.getSpace().getId())")
     public abstract StorageDto toStorageDto(final StorageEntity storage);
 
+    @Mapping(target = "parentId", expression = "java(item.getParent().getId())")
+    @Mapping(target = "spaceId", expression = "java(item.getSpace().getId())")
     public abstract ItemDto toItemDto(final ItemEntity item);
+
+    @Mapping(target = "owner", ignore = true)
+    public abstract SpaceEntity toSpaceEntity(CreateSpaceRequest space);
 
     public RoomEntity toRoomEntity(final long parentId, final CreateElementRequest request) {
         final var parent = spaceEntityRepository.findById(parentId).orElseThrow();
@@ -68,6 +73,7 @@ public abstract class ElementMapper {
                 .name(request.getName())
                 .description(request.getDescription())
                 .parent(parent)
+                .space(parent.getSpace())
                 .build();
     }
 
@@ -77,6 +83,7 @@ public abstract class ElementMapper {
                 .name(request.getName())
                 .description(request.getDescription())
                 .parent(parent)
+                .space(parent.getSpace())
                 .build();
     }
 }

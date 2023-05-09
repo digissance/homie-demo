@@ -6,11 +6,13 @@ import biz.digissance.homiedemo.http.dto.CreateSpaceRequest;
 import biz.digissance.homiedemo.http.dto.RoomDto;
 import biz.digissance.homiedemo.http.dto.SpaceDto;
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface SpaceService {
 
     SpaceDto createSpace(final CreateSpaceRequest request, final String owner);
 
+    @PreAuthorize("hasPermission(#spaceId,'EDIT')")
     RoomDto createRoom(final long spaceId, final CreateElementRequest request);
 
     List<RoomEntity> getRooms(final long spaceId);

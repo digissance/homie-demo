@@ -1,6 +1,5 @@
 package biz.digissance.homiedemo.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
@@ -17,7 +16,6 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 public abstract class StuffEntity extends ElementEntity {
 
-    @JsonIgnore
     @ToString.Exclude
     @ManyToOne(targetEntity = ElementEntity.class)
     private RoomOrStorage parent;

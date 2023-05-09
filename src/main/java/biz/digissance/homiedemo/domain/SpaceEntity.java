@@ -1,6 +1,5 @@
 package biz.digissance.homiedemo.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -22,11 +21,9 @@ import lombok.experimental.SuperBuilder;
 public class SpaceEntity extends ElementEntity {
 
     @ManyToOne
-    @JsonIgnore
     @ToString.Exclude
     private UserEntity owner;
 
-    @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy = "space")
     private Set<RoomEntity> rooms;
