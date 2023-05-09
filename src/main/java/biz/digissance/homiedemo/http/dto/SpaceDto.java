@@ -1,8 +1,8 @@
 package biz.digissance.homiedemo.http.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Consumer;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,15 +15,15 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class SpaceDto extends ElementDto {
+public class SpaceDto extends ElementDto implements SomethingHoldingElements {
 
     @Builder.Default
     @ToString.Exclude
     private Set<RoomDto> rooms = new HashSet<>();
 
     @Override
-    public void visit(final Consumer<ElementDto> visitor) {
-        visitor.accept(this);
-        rooms.forEach(p->p.visit(visitor));
+    @JsonIgnore
+    public Set<ElementDto> getElements() {
+        return new HashSet<>(rooms);
     }
 }

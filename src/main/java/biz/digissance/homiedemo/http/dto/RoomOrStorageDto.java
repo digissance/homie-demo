@@ -4,5 +4,5 @@ import java.util.Set;
 
 public interface RoomOrStorageDto {
     Long getId();
-    Set<StuffDto> getElements();
+    Set<StuffDto> getStuff();
 }

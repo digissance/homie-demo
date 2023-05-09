@@ -1,6 +1,6 @@
 package biz.digissance.homiedemo.bdd;
 
-import biz.digissance.homiedemo.http.dto.RoomDto;
+import biz.digissance.homiedemo.http.dto.ElementDto;
 import biz.digissance.homiedemo.http.dto.RoomOrStorageDto;
 import biz.digissance.homiedemo.http.dto.SpaceDto;
 import biz.digissance.homiedemo.http.dto.UserDto;
@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 public class MyCache {
 
@@ -46,11 +47,16 @@ public class MyCache {
 
     public RoomOrStorageDto findRoomByName(final String roomName) {
         final var room = new AtomicReference<RoomOrStorageDto>();
-        spaceCache.forEach((s, spaceDto) -> spaceDto.visit(elementDto -> {
-            if (elementDto.getName().equals(roomName) && elementDto instanceof RoomOrStorageDto) {
-                room.set((RoomOrStorageDto) elementDto);
+        final var visitor = getTraverser(elementDto -> {
+            if (elementDto.getName().equals(roomName) && elementDto instanceof RoomOrStorageDto rs) {
+                room.set(rs);
             }
-        }));
+        });
+        spaceCache.forEach((s, spaceDto) -> spaceDto.visit(visitor));
         return room.get();
+    }
+
+    private Consumer<ElementDto> getTraverser(Consumer<ElementDto> doYourThing) {
+        return new ElementDtoVisitor(doYourThing);
     }
 }

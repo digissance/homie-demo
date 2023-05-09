@@ -2,7 +2,6 @@ package biz.digissance.homiedemo.bdd;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import biz.digissance.homiedemo.http.dto.CreateElementRequest;
 import biz.digissance.homiedemo.http.dto.ElementDto;
 import biz.digissance.homiedemo.http.dto.ItemDto;
 import biz.digissance.homiedemo.http.dto.SpaceDto;
@@ -13,6 +12,7 @@ import io.cucumber.java.en.When;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 
@@ -84,7 +84,7 @@ public class SpaceSteps {
         storageRequests.forEach(request -> {
             final var parent = myCache.findRoomByName(request.room());
             final var actual = request.create(parent);
-            parent.getElements().add(actual);
+            parent.getStuff().add(actual);
         });
     }
 
@@ -92,11 +92,11 @@ public class SpaceSteps {
     public void allTheStorageUnitsListedAboveExistInTheSpaceHome(String spaceName) {
         final var actual = new ArrayList<String>();
         myCache.getSpace(spaceName)
-                .visit(elementDto -> {
-                    if (elementDto instanceof StorageDto) {
+                .visit(getTraverser(elementDto -> {
+                    if (elementDto instanceof StorageDto rs) {
                         actual.add(elementDto.getName());
                     }
-                });
+                }));
         assertThat(actual)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("room")
                 .containsExactlyInAnyOrderElementsOf(expectedStorage.stream()
@@ -109,7 +109,7 @@ public class SpaceSteps {
         itemRequests.forEach(s -> {
             final var parent = myCache.findRoomByName(s.parent());
             final var actual = s.create(parent);
-            parent.getElements().add(actual);
+            parent.getStuff().add(actual);
         });
     }
 
@@ -117,15 +117,19 @@ public class SpaceSteps {
     public void allTheItemsListedAboveExistInTheSpaceHome(String spaceName) {
         final var actual = new ArrayList<String>();
         myCache.getSpace(spaceName)
-                .visit(elementDto -> {
-                    if (elementDto instanceof ItemDto) {
+                .visit(getTraverser(elementDto -> {
+                    if (elementDto instanceof ItemDto rs) {
                         actual.add(elementDto.getName());
                     }
-                });
+                }));
         assertThat(actual)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("parent")
                 .containsExactlyInAnyOrderElementsOf(expectedItems.stream()
                         .map(ItemRequest::name)
                         .collect(Collectors.toList()));
+    }
+
+    private Consumer<ElementDto> getTraverser(Consumer<ElementDto> doYourThing) {
+        return new ElementDtoVisitor(doYourThing);
     }
 }

@@ -23,5 +23,7 @@ public abstract class ElementDto {
     private String description;
     private String path;
 
-    public abstract void visit(Consumer<ElementDto> visitor);
+    public final void visit(Consumer<ElementDto> visitor) {
+        visitor.accept(this);
+    }
 }
