@@ -2,6 +2,7 @@ Feature: Create a Space with several rooms and elements in it
 
   Background:
     Given user with name 'Gus'
+    When user logs in
 
   Scenario: 'User Creates a Space and rooms within that space'
     When user creates a space with details:

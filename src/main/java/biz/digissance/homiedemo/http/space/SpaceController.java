@@ -9,6 +9,7 @@ import biz.digissance.homiedemo.service.SpaceService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,9 +29,11 @@ public class SpaceController {
     }
 
     @PostMapping
-    public final ResponseEntity<SpaceDto> createSpace(final @RequestBody CreateSpaceRequest request,
-                                                      final UriComponentsBuilder uri) {
-        final var space = service.createSpace(request);
+    public final ResponseEntity<SpaceDto> createSpace(
+            final @RequestBody CreateSpaceRequest request,
+            final Authentication auth,
+            final UriComponentsBuilder uri) {
+        final var space = service.createSpace(request, auth.getName());
         return ResponseEntity.created(uri
                 .path("/spaces/{id}")
                 .buildAndExpand(Map.of("id", space.getName()))
