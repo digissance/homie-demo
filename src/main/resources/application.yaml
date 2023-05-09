@@ -32,6 +32,6 @@ app:
       secured: true
     jwt:
       token_age: 60
-      key: "${APP_JWT_KEY}"
+      key: "${APP_JWT_KEY:123456}"
     debug:
       enabled: false
