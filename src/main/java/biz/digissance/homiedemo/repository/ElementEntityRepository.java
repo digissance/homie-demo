@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ElementEntityRepository extends JpaRepository<ElementEntity, Long> {
 
     List<ElementEntity> findByPathStartingWith(final String startOfPath);
+
+    List<ElementEntity> findByIdOrSpaceId(final long id, final long spaceId);
 }

@@ -1,6 +1,5 @@
 package biz.digissance.homiedemo.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -36,24 +35,19 @@ public abstract class BaseEntity {
     private Long id;
 
     @Version
-    @JsonIgnore
     private Long version;
 
-    @JsonIgnore
     @CreatedBy
     @Column(updatable = false)
     private String createdBy;
 
-    @JsonIgnore
     @CreatedDate
     @Column(updatable = false)
     private Instant createdDate;
 
-    @JsonIgnore
     @LastModifiedBy
     private String modifiedBy;
 
-    @JsonIgnore
     @LastModifiedDate
     private Instant modifiedDate;
 }
