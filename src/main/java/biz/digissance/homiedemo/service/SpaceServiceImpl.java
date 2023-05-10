@@ -16,6 +16,7 @@ import biz.digissance.homiedemo.repository.ElementEntityRepository;
 import biz.digissance.homiedemo.repository.RoomEntityRepository;
 import biz.digissance.homiedemo.repository.SpaceEntityRepository;
 import biz.digissance.homiedemo.repository.UserEntityRepository;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,7 @@ public class SpaceServiceImpl implements SpaceService {
     public SpaceDto createSpace(final CreateSpaceRequest request, final String owner) {
         final var spaceEntity = mapper.toSpaceEntity(request);
         spaceEntity.setOwner(userEntityRepository.findByIdentifier(owner).orElseThrow());
+        spaceEntity.setSpace(spaceEntity);
         final var createdSpace = spaceEntityRepository.save(spaceEntity);
         return mapper.toSpaceDto(createdSpace);
     }
@@ -75,7 +77,9 @@ public class SpaceServiceImpl implements SpaceService {
     public SpaceDto getSpaceTree(final long spaceId) {
 //        final var space = spaceEntityRepository.findById(spaceId).orElseThrow();
         Map<Long, ElementDto> elementDtoMap = new HashMap<>();
-        elementEntityRepository.findByIdOrSpaceId(spaceId, spaceId)
+        elementEntityRepository.findBySpaceId(spaceId)
+                .stream()
+                .sorted(Comparator.comparing(ElementEntity::getPath))
                 .forEach(p -> consumerMap.get(p.getClass()).accept(p, elementDtoMap));
         return (SpaceDto) elementDtoMap.get(spaceId);
     }

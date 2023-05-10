@@ -5,7 +5,6 @@ import biz.digissance.homiedemo.http.dto.CreateElementRequest;
 import biz.digissance.homiedemo.http.dto.ItemDto;
 import biz.digissance.homiedemo.http.dto.StorageDto;
 import biz.digissance.homiedemo.repository.ElementEntityRepository;
-import biz.digissance.homiedemo.repository.StuffEntityRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,14 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class StorageServiceImpl implements StorageService {
 
     private final ElementEntityRepository repository;
-    private final StuffEntityRepository stuffEntityRepository;
     private final ElementMapper mapper;
 
     public StorageServiceImpl(final ElementEntityRepository repository,
-                              final StuffEntityRepository stuffEntityRepository,
                               final ElementMapper mapper) {
         this.repository = repository;
-        this.stuffEntityRepository = stuffEntityRepository;
         this.mapper = mapper;
     }
 

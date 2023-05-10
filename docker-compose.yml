@@ -30,7 +30,6 @@ services:
       SPRING_DATASOURCE_USERNAME: homie-demo-db
       SPRING_DATASOURCE_PASSWORD: "Postgr@s321!"
       SPRING_PROFILES_ACTIVE: dev
-      SECURITY_DEBUG_ENABLED: "true"
     depends_on:
       database:
         condition: service_healthy

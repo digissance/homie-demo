@@ -30,11 +30,11 @@ public class StorageController {
     public final ResponseEntity<ItemDto> createItem(final @PathVariable long id,
                                                     final @RequestBody CreateElementRequest request,
                                                     final UriComponentsBuilder uri) {
-        final var storage = storageService.createItem(id, request);
+        final var item = storageService.createItem(id, request);
         return ResponseEntity.created(uri
                 .path("/items/{id}")
-                .buildAndExpand(Map.of("id", storage.getId()))
-                .toUri()).body(storage);
+                .buildAndExpand(Map.of("id", item.getId()))
+                .toUri()).body(item);
     }
 
     @PostMapping("/{id}/storage")
