@@ -8,5 +8,5 @@ public interface ElementEntityRepository extends JpaRepository<ElementEntity, Lo
 
     List<ElementEntity> findByPathStartingWith(final String startOfPath);
 
-    List<ElementEntity> findByIdOrSpaceId(final long id, final long spaceId);
+    List<ElementEntity> findBySpaceId(final long spaceId);
 }

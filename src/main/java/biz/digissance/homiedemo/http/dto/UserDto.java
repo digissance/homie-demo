@@ -10,7 +10,6 @@ public class UserDto {
 
     private String identifier;
     private String username;
-    //    @JsonIgnore
     @ToString.Exclude
     private String password;
 }
