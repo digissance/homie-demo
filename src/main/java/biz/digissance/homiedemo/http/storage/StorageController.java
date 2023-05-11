@@ -8,6 +8,7 @@ import biz.digissance.homiedemo.service.StorageService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,5 +54,11 @@ public class StorageController {
                                                                final UriComponentsBuilder uri) {
 //        return ResponseEntity.ok(stuffEntityRepository.findByParentId(id));
         throw new RuntimeException("not yet implemented");
+    }
+
+    @DeleteMapping("/{id}")
+    public final ResponseEntity<Void> deleteStorage(final @PathVariable long id) {
+        storageService.deleteStorage(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -8,9 +8,9 @@ record ElementDtoVisitor(Consumer<ElementDto> doYourThing) implements Consumer<E
 
     @Override
     public void accept(final ElementDto elementDto) {
+        doYourThing.accept(elementDto);
         if (elementDto instanceof SomethingHoldingElements space) {
             space.getElements().forEach(p -> p.visit(this));
         }
-        doYourThing.accept(elementDto);
     }
 }

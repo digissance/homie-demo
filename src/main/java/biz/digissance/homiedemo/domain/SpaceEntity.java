@@ -25,7 +25,7 @@ public class SpaceEntity extends ElementEntity {
     private UserEntity owner;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "space")
+    @OneToMany(mappedBy = "space", orphanRemoval = true)
     private Set<RoomEntity> rooms;
 
     @Override

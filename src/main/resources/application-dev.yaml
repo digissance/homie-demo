@@ -29,7 +29,7 @@ spring:
       hibernate:
         format_sql: true
   flyway:
-    enabled: true
+    enabled: false
 management:
   endpoints:
     web:

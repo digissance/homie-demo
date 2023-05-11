@@ -32,4 +32,9 @@ public class StorageServiceImpl implements StorageService {
         final var storageEntity = mapper.toStorageEntity(parentId, request);
         return mapper.toStorageDto(repository.save(storageEntity));
     }
+
+    @Override
+    public void deleteStorage(final long id) {
+        repository.deleteById(id);
+    }
 }

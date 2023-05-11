@@ -9,6 +9,7 @@ import biz.digissance.homiedemo.service.RoomService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,5 +57,11 @@ public class RoomController {
     public final ResponseEntity<List<StuffEntity>> getElements(final @PathVariable long id,
                                                                final UriComponentsBuilder uri) {
         return ResponseEntity.ok(stuffEntityRepository.findByParentId(id));
+    }
+
+    @DeleteMapping("/{id}")
+    public final ResponseEntity<Void> deleteRoom(final @PathVariable long id) {
+        roomService.deleteRoom(id);
+        return ResponseEntity.noContent().build();
     }
 }
