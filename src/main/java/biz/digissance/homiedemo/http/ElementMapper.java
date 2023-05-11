@@ -1,6 +1,8 @@
 package biz.digissance.homiedemo.http;
 
+import biz.digissance.homiedemo.domain.ElementEntity;
 import biz.digissance.homiedemo.domain.ItemEntity;
+import biz.digissance.homiedemo.domain.PhotoEntity;
 import biz.digissance.homiedemo.domain.RoomEntity;
 import biz.digissance.homiedemo.domain.RoomOrStorage;
 import biz.digissance.homiedemo.domain.SpaceEntity;
@@ -15,6 +17,8 @@ import biz.digissance.homiedemo.http.dto.StorageDto;
 import biz.digissance.homiedemo.http.dto.UserDto;
 import biz.digissance.homiedemo.repository.ElementEntityRepository;
 import biz.digissance.homiedemo.repository.SpaceEntityRepository;
+import com.cloudinary.Cloudinary;
+import java.util.Optional;
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -34,24 +38,30 @@ public abstract class ElementMapper {
     private SpaceEntityRepository spaceEntityRepository;
     @Autowired
     private ElementEntityRepository elementEntityRepository;
+    @Autowired
+    private Cloudinary cloudinary;
 
     @Mapping(target = "password", ignore = true)
     public abstract UserDto toUserDto(final UserEntity user);
 
     @Mapping(target = "rooms", ignore = true)
+    @Mapping(target = "photoSecureURL", expression = "java(myFunc(space))")
     public abstract SpaceDto toSpaceDto(final SpaceEntity space);
 
     @Mapping(target = "stuff", ignore = true)
     @Mapping(target = "spaceId", expression = "java(room.getSpace().getId())")
+    @Mapping(target = "photoSecureURL", expression = "java(myFunc(room))")
     public abstract RoomDto toRoomDto(final RoomEntity room);
 
     @Mapping(target = "stuff", ignore = true)
     @Mapping(target = "parentId", expression = "java(storage.getParent().getId())")
     @Mapping(target = "spaceId", expression = "java(storage.getSpace().getId())")
+    @Mapping(target = "photoSecureURL", expression = "java(myFunc(storage))")
     public abstract StorageDto toStorageDto(final StorageEntity storage);
 
     @Mapping(target = "parentId", expression = "java(item.getParent().getId())")
     @Mapping(target = "spaceId", expression = "java(item.getSpace().getId())")
+    @Mapping(target = "photoSecureURL", expression = "java(myFunc(item))")
     public abstract ItemDto toItemDto(final ItemEntity item);
 
     @Mapping(target = "owner", ignore = true)
@@ -84,5 +94,10 @@ public abstract class ElementMapper {
                 .parent(parent)
                 .space(parent.getSpace())
                 .build();
+    }
+
+    public String myFunc(ElementEntity element) {
+        return Optional.ofNullable(element.getPhoto())
+                .map(PhotoEntity::getSecureURL).orElse(null);
     }
 }

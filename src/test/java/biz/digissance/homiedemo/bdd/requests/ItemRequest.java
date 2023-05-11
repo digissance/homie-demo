@@ -1,4 +1,4 @@
-package biz.digissance.homiedemo.bdd;
+package biz.digissance.homiedemo.bdd.requests;
 
 import biz.digissance.homiedemo.http.dto.CreateElementRequest;
 import biz.digissance.homiedemo.http.dto.ItemDto;

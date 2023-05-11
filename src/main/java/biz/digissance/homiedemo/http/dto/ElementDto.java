@@ -22,6 +22,7 @@ public abstract class ElementDto {
     private String name;
     private String description;
     private String path;
+    private String photoSecureURL;
 
     public final void visit(Consumer<ElementDto> visitor) {
         visitor.accept(this);

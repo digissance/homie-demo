@@ -1,5 +1,6 @@
-package biz.digissance.homiedemo.bdd;
+package biz.digissance.homiedemo.bdd.config;
 
+import biz.digissance.homiedemo.bdd.steps.MyCache;
 import biz.digissance.homiedemo.repository.ElementEntityRepository;
 import biz.digissance.homiedemo.repository.UserEntityRepository;
 import biz.digissance.homiedemo.service.UserService;

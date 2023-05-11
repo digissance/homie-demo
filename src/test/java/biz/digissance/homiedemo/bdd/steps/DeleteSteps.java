@@ -1,7 +1,11 @@
-package biz.digissance.homiedemo.bdd;
+package biz.digissance.homiedemo.bdd.steps;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import biz.digissance.homiedemo.bdd.requests.ItemRequest;
+import biz.digissance.homiedemo.bdd.requests.RoomRequest;
+import biz.digissance.homiedemo.bdd.requests.SpaceRequest;
+import biz.digissance.homiedemo.bdd.requests.StorageRequest;
 import biz.digissance.homiedemo.http.dto.ElementDto;
 import biz.digissance.homiedemo.http.dto.ItemDto;
 import biz.digissance.homiedemo.http.dto.RoomDto;
@@ -19,7 +23,6 @@ import java.util.function.Consumer;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatusCode;
 
 public class DeleteSteps {
 

@@ -1,4 +1,4 @@
-package biz.digissance.homiedemo.bdd;
+package biz.digissance.homiedemo.bdd.config;
 
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;

@@ -1,5 +1,9 @@
-package biz.digissance.homiedemo.bdd;
+package biz.digissance.homiedemo.bdd.steps;
 
+import biz.digissance.homiedemo.bdd.requests.ItemRequest;
+import biz.digissance.homiedemo.bdd.requests.RoomRequest;
+import biz.digissance.homiedemo.bdd.requests.SpaceRequest;
+import biz.digissance.homiedemo.bdd.requests.StorageRequest;
 import biz.digissance.homiedemo.http.dto.UserDto;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.ParameterType;
