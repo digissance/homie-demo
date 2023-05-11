@@ -2,7 +2,6 @@ package biz.digissance.homiedemo.domain;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 public class RoomEntity extends ElementEntity implements RoomOrStorage {
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
     private Set<StuffEntity> elements = new HashSet<>();
 
     @Override

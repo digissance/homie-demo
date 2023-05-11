@@ -23,8 +23,8 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public abstract class ElementEntity extends BaseEntity {
 
-    @ManyToOne
     @ToString.Exclude
+    @ManyToOne(optional = false)
     private SpaceEntity space;
 
     private String name;

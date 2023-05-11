@@ -1,0 +1,214 @@
+{
+  "@type": "Space",
+  "name": "Home",
+  "description": "This is my main address",
+  "rooms": [
+    {
+      "@type": "Room",
+      "name": "Living room",
+      "description": "Living room",
+      "stuff": [
+        {
+          "@type": "Storage",
+          "name": "Tv Closet",
+          "description": "Books and documents",
+          "stuff": [
+            {
+              "@type": "Item",
+              "name": "Tv Guide"
+            }
+          ]
+        },
+        {
+          "@type": "Storage",
+          "name": "Wardrobe LR",
+          "description": "Baby stuff and medicines",
+          "stuff": [
+            {
+              "@type": "Item",
+              "name": "Aspirin"
+            }
+          ]
+        },
+        {
+          "@type": "Storage",
+          "name": "Sofa Bed LR",
+          "description": "Blankets and pillows",
+          "stuff": [
+            {
+              "@type": "Item",
+              "name": "Blankets"
+            }
+          ]
+        },
+        {
+          "@type": "Item",
+          "name": "Tv Remote"
+        }
+      ]
+    },
+    {
+      "@type": "Room",
+      "name": "Bathroom 1",
+      "description": "Bathroom 1",
+      "stuff": [
+        {
+          "@type": "Storage",
+          "name": "Drawers Bathroom 1",
+          "description": "Toiletry stuff",
+          "stuff": [
+            {
+              "@type": "Item",
+              "name": "Toothbrush"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Room",
+      "name": "Kitchen",
+      "description": "Kitchen",
+      "stuff": [
+        {
+          "@type": "Storage",
+          "name": "Fridge",
+          "description": "The one and only fridge",
+          "stuff": [
+            {
+              "@type": "Item",
+              "name": "Strawberry Jam"
+            }
+          ]
+        },
+        {
+          "@type": "Storage",
+          "name": "Pantry",
+          "description": "Dry food and cookies",
+          "stuff": [
+            {
+              "@type": "Item",
+              "name": "Cookies"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Room",
+      "name": "Bedroom 1",
+      "description": "Bedroom 1",
+      "stuff": [
+        {
+          "@type": "Storage",
+          "name": "Wardrobe Left",
+          "description": "Wardrobe next to the window, guy's clothes and hardware tools",
+          "stuff": [
+            {
+              "@type": "Item",
+              "name": "Hammer"
+            }
+          ]
+        },
+        {
+          "@type": "Storage",
+          "name": "Wardrobe Right",
+          "description": "Wardrobe next to the door, girl's clothes and lots of shoes",
+          "stuff": [
+            {
+              "@type": "Item",
+              "name": "Shoes"
+            }
+          ]
+        },
+        {
+          "@type": "Storage",
+          "name": "Drawers Bedroom",
+          "description": "Drawers between wardrobes, socks and underware and some documents",
+          "stuff": [
+            {
+              "@type": "Item",
+              "name": "Socks"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Room",
+      "name": "Office",
+      "description": "Office",
+      "stuff": [
+        {
+          "@type": "Storage",
+          "name": "Sofa Bed Office",
+          "description": "This is the office and misc stuff",
+          "stuff": [
+            {
+              "@type": "Item",
+              "name": "Pillows"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "Room",
+      "name": "Bathroom 2 (Kids)",
+      "description": "Bathroom 2 (Kids)",
+      "stuff": [
+        {
+          "@type": "Storage",
+          "name": "Shelves",
+          "description": "Towels",
+          "stuff": [
+            {
+              "@type": "Storage",
+              "name": "Bottom Shelf",
+              "description": "Towels",
+              "stuff": [
+                {
+                  "@type": "Item",
+                  "name": "Bath Toys"
+                }
+              ]
+            },
+            {
+              "@type": "Storage",
+              "name": "Middle Shelf",
+              "description": "Towels",
+              "stuff": [
+                {
+                  "@type": "Item",
+                  "name": "Green Towel"
+                }
+              ]
+            },
+            {
+              "@type": "Storage",
+              "name": "Top Shelf",
+              "description": "Towels",
+              "stuff": [
+                {
+                  "@type": "Item",
+                  "name": "Gray Towel"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "Storage",
+          "name": "Drawers Bathroom 2",
+          "description": "Toiletry stuff and hair dryer",
+          "stuff": [
+            {
+              "@type": "Item",
+              "name": "Soap"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 package biz.digissance.homiedemo.bdd;
 
+import biz.digissance.homiedemo.repository.ElementEntityRepository;
+import biz.digissance.homiedemo.repository.UserEntityRepository;
 import biz.digissance.homiedemo.service.UserService;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +10,9 @@ import org.springframework.context.annotation.Bean;
 public class TestConfig {
 
     @Bean
-    public MyCache appCache(final UserService userService) {
-        return new MyCache(userService);
+    public MyCache appCache(final UserService userService,
+                            final ElementEntityRepository elementEntityRepository,
+                            final UserEntityRepository userEntityRepository) {
+        return new MyCache(userService, elementEntityRepository, userEntityRepository);
     }
 }

@@ -3,12 +3,10 @@ package biz.digissance.homiedemo.security;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 import biz.digissance.homiedemo.domain.UserEntity;
-import biz.digissance.homiedemo.repository.SpaceEntityRepository;
 import biz.digissance.homiedemo.repository.UserEntityRepository;
 import biz.digissance.homiedemo.service.TokenService;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import jakarta.servlet.http.Cookie;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Optional;
 import javax.crypto.spec.SecretKeySpec;
@@ -17,7 +15,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Example;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -27,7 +24,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -137,23 +133,10 @@ public class SecurityConfig {
     }
 
     @Bean
-    public MethodSecurityExpressionHandler methodSecurityExpressionHandler(final SpaceEntityRepository repository) {
+    public MethodSecurityExpressionHandler methodSecurityExpressionHandler(
+            final MyPermissionEvaluator myPermissionEvaluator) {
         final var defaultMethodSecurityExpressionHandler = new DefaultMethodSecurityExpressionHandler();
-        defaultMethodSecurityExpressionHandler.setPermissionEvaluator(new PermissionEvaluator() {
-            @Override
-            public boolean hasPermission(final Authentication authentication, final Object targetDomainObject,
-                                         final Object permission) {
-                return repository.findByIdAndOwner_Identifier((Long) targetDomainObject, authentication.getName())
-                        .isPresent();
-            }
-
-            @Override
-            public boolean hasPermission(final Authentication authentication, final Serializable targetId,
-                                         final String targetType,
-                                         final Object permission) {
-                return false;
-            }
-        });
+        defaultMethodSecurityExpressionHandler.setPermissionEvaluator(myPermissionEvaluator);
         return defaultMethodSecurityExpressionHandler;
     }
 

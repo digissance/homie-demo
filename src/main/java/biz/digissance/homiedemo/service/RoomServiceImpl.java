@@ -33,4 +33,9 @@ public class RoomServiceImpl implements RoomService {
         final var save = repository.save(itemEntity);
         return mapper.toItemDto(save);
     }
+
+    @Override
+    public void deleteRoom(final long id) {
+        repository.deleteById(id);
+    }
 }

@@ -20,6 +20,6 @@ import lombok.experimental.SuperBuilder;
 public class StorageEntity extends StuffEntity implements RoomOrStorage {
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
     private Set<StuffEntity> elements;
 }
