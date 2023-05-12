@@ -28,8 +28,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  flyway:
-    enabled: false
 management:
   endpoints:
     web:

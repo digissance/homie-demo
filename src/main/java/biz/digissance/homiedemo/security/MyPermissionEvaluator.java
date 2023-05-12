@@ -22,7 +22,7 @@ public class MyPermissionEvaluator implements PermissionEvaluator {
                                  final Object permission) {
 
         final var realOwner =
-                elementEntityRepository.findById((Long) targetDomainObject).orElseThrow().getSpace().getOwner();
+                elementEntityRepository.findById((Long) targetDomainObject).orElseThrow().getOwner();
 
         return realOwner.getIdentifier().equals(authentication.getName());
     }

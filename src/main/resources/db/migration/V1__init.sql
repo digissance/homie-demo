@@ -36,7 +36,8 @@ create table element_entity
     path             varchar(255)
         constraint uk_gnja8ur19e9fxpq92ak78xwl4
             unique,
-    space_id         bigint
+    photo_id         bigint,
+    space_id         bigint      not null
         constraint fk3o90lm15i382q4n9pjy4ncl8t
             references element_entity,
     parent_id        bigint
@@ -47,3 +48,28 @@ create table element_entity
     constraint fkpxra4jcx4qa31vusoo78mlclp
         foreign key (owner_id, owner_identifier) references user_entity
 );
+
+create table photo_entity
+(
+    id            bigint not null
+        constraint photo_entity_pkey
+            primary key,
+    created_by    varchar(255),
+    created_date  timestamp(6) with time zone,
+    modified_by   varchar(255),
+    modified_date timestamp(6) with time zone,
+    version       bigint,
+    image         varchar(255),
+    secureurl     varchar(255),
+    title         varchar(255),
+    element_id    bigint not null
+        constraint uk_irc53fre18fi2ucld9nb43olq
+            unique
+        constraint fke5mvlpxqyfiq147ciq0k2o3v6
+            references element_entity
+);
+
+alter table element_entity
+    add constraint fk13b3jxl1bog10bxtklqh3ca8k
+        foreign key (photo_id) references photo_entity;
+

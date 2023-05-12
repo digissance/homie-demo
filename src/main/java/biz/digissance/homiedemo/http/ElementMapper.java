@@ -73,6 +73,7 @@ public abstract class ElementMapper {
                 .name(request.getName())
                 .description(request.getDescription())
                 .space(parent)
+                .owner(parent.getOwner())
                 .build();
     }
 
@@ -83,6 +84,7 @@ public abstract class ElementMapper {
                 .description(request.getDescription())
                 .parent(parent)
                 .space(parent.getSpace())
+                .owner(parent.getOwner())
                 .build();
     }
 
@@ -93,6 +95,7 @@ public abstract class ElementMapper {
                 .description(request.getDescription())
                 .parent(parent)
                 .space(parent.getSpace())
+                .owner(parent.getOwner())
                 .build();
     }
 

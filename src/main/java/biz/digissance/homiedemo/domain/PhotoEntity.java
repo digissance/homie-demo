@@ -29,7 +29,7 @@ public class PhotoEntity extends BaseEntity {
     private String secureURL;
 
     @ToString.Exclude
-    @OneToOne(optional = false, orphanRemoval = true)
+    @OneToOne(optional = false)
     private ElementEntity element;
 
     @Transient
