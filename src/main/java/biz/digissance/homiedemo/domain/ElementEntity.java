@@ -28,6 +28,10 @@ public abstract class ElementEntity extends BaseEntity {
     @ManyToOne(optional = false)
     private SpaceEntity space;
 
+    @ToString.Exclude
+    @ManyToOne(optional = false)
+    private UserEntity owner;
+
     private String name;
     private String description;
     @Column(unique = true)

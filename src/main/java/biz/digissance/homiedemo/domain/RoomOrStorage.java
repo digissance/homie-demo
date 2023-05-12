@@ -11,4 +11,6 @@ public interface RoomOrStorage {
     Set<StuffEntity> getElements();
 
     SpaceEntity getSpace();
+
+    UserEntity getOwner();
 }

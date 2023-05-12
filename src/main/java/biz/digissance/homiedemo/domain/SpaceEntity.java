@@ -2,7 +2,6 @@ package biz.digissance.homiedemo.domain;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.Set;
 import lombok.Getter;
@@ -20,16 +19,12 @@ import lombok.experimental.SuperBuilder;
 @DiscriminatorValue("space")
 public class SpaceEntity extends ElementEntity {
 
-    @ManyToOne
-    @ToString.Exclude
-    private UserEntity owner;
-
     @ToString.Exclude
     @OneToMany(mappedBy = "space", orphanRemoval = true)
     private Set<RoomEntity> rooms;
 
     @Override
     protected String internalCalculatePath() {
-        return "/".concat(this.owner.getId().toString().concat("/").concat(this.getName()));
+        return "/".concat(this.getOwner().getIdentifier().concat("/").concat(this.getName()));
     }
 }
