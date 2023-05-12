@@ -17,9 +17,6 @@ public class CloudinaryConfig {
                 "cloud_name", cloudName,
                 "api_key", apiKey,
                 "api_secret", apiSecret);
-        final var cloudinary = new Cloudinary(config);
-        final var uploadStrategy = new com.cloudinary.http44.UploaderStrategy();
-        final var apiStrategy = new com.cloudinary.http44.ApiStrategy();
-        return cloudinary;
+        return new Cloudinary(config);
     }
 }
