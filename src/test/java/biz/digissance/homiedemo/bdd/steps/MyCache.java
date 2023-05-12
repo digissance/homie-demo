@@ -1,4 +1,4 @@
-package biz.digissance.homiedemo.bdd;
+package biz.digissance.homiedemo.bdd.steps;
 
 import biz.digissance.homiedemo.http.dto.ElementDto;
 import biz.digissance.homiedemo.http.dto.ItemDto;

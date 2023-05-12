@@ -7,9 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
-import lombok.Getter;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationManagerResolver;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,19 +17,7 @@ class MyBearerTokenAuthenticationFilter extends BearerTokenAuthenticationFilter 
     private final TokenService tokenService;
 
     public MyBearerTokenAuthenticationFilter(final HttpSecurity http, final TokenService tokenService) {
-        super(new AuthenticationManagerResolver<HttpServletRequest>() {
-            @Getter(lazy = true)
-            private final AuthenticationManager cached = expensive();
-
-            private AuthenticationManager expensive() {
-                return http.getSharedObject(AuthenticationManager.class);
-            }
-
-            @Override
-            public AuthenticationManager resolve(final HttpServletRequest context) {
-                return getCached();
-            }
-        });
+        super(new HttpServletRequestAuthenticationManagerResolver(http));
         this.tokenService = tokenService;
     }
 

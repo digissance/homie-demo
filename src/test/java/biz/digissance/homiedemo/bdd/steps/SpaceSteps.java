@@ -1,7 +1,11 @@
-package biz.digissance.homiedemo.bdd;
+package biz.digissance.homiedemo.bdd.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import biz.digissance.homiedemo.bdd.requests.ItemRequest;
+import biz.digissance.homiedemo.bdd.requests.RoomRequest;
+import biz.digissance.homiedemo.bdd.requests.SpaceRequest;
+import biz.digissance.homiedemo.bdd.requests.StorageRequest;
 import biz.digissance.homiedemo.http.dto.ElementDto;
 import biz.digissance.homiedemo.http.dto.ItemDto;
 import biz.digissance.homiedemo.http.dto.SpaceDto;

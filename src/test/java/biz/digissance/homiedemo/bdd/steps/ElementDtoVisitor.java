@@ -1,10 +1,10 @@
-package biz.digissance.homiedemo.bdd;
+package biz.digissance.homiedemo.bdd.steps;
 
 import biz.digissance.homiedemo.http.dto.ElementDto;
 import biz.digissance.homiedemo.http.dto.SomethingHoldingElements;
 import java.util.function.Consumer;
 
-record ElementDtoVisitor(Consumer<ElementDto> doYourThing) implements Consumer<ElementDto> {
+public record ElementDtoVisitor(Consumer<ElementDto> doYourThing) implements Consumer<ElementDto> {
 
     @Override
     public void accept(final ElementDto elementDto) {

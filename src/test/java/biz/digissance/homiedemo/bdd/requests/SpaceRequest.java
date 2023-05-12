@@ -1,4 +1,4 @@
-package biz.digissance.homiedemo.bdd;
+package biz.digissance.homiedemo.bdd.requests;
 
 import biz.digissance.homiedemo.http.dto.CreateSpaceRequest;
 import biz.digissance.homiedemo.http.dto.SpaceDto;

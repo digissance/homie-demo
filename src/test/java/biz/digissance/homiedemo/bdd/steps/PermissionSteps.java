@@ -1,7 +1,10 @@
-package biz.digissance.homiedemo.bdd;
+package biz.digissance.homiedemo.bdd.steps;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import biz.digissance.homiedemo.bdd.requests.ItemRequest;
+import biz.digissance.homiedemo.bdd.requests.RoomRequest;
+import biz.digissance.homiedemo.bdd.requests.StorageRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
