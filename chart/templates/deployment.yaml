@@ -41,7 +41,7 @@ spec:
             - name: "SPRING_DATASOURCE_PASSWORD"
               value: {{ .Values.app.database.password }}
             - name: "SPRING_PROFILES_ACTIVE"
-              value: {{ .Values.app.spring.profile }}
+              value: "{{ .Values.app.spring.profile }}"
             - name: "APP_JWT_KEY"
               value: {{ .Values.app.jwt.key }}
             - name: "CLOUDINARY_NAME"
