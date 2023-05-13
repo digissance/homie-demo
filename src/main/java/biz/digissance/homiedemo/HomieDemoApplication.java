@@ -1,6 +1,8 @@
 package biz.digissance.homiedemo;
 
 import biz.digissance.homiedemo.cloudinary.CloudinaryImportBeanDefinitionRegistrar;
+import biz.digissance.homiedemo.service.photo.PhotoCleanerScheduler;
+import biz.digissance.homiedemo.service.photo.PhotoService;
 import java.security.Principal;
 import java.util.Optional;
 import javax.sql.DataSource;
@@ -37,5 +39,10 @@ public class HomieDemoApplication {
     @Bean
     public LockProvider lockProvider(DataSource dataSource) {
         return new JdbcTemplateLockProvider(dataSource);
+    }
+
+    @Bean
+    public PhotoCleanerScheduler photoCleanerScheduler(final PhotoService photoService){
+        return new PhotoCleanerScheduler(photoService);
     }
 }
