@@ -11,11 +11,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
-@Service
-@Transactional
-@Profile({"!cloudinary"})
-public class LocalDevPhotoService implements PhotoService {
+//@Slf4j
+//@Service
+//@Transactional
+//@Profile({"!cloudinary"})
+public class LocalDevPhotoService {//implements PhotoService {
 
     private final ElementEntityRepository elementEntityRepository;
     private final PhotoRepository photoRepository;
@@ -27,7 +27,7 @@ public class LocalDevPhotoService implements PhotoService {
         this.photoRepository = photoRepository;
     }
 
-    @Override
+//    @Override
     public void addPhotoToElement(final Long id, final PhotoUpload photoUpload, final Authentication auth) {
 
         final var elementEntity = elementEntityRepository.findById(id).orElseThrow();
@@ -46,9 +46,9 @@ public class LocalDevPhotoService implements PhotoService {
         elementEntityRepository.save(elementEntity);
     }
 
-    @Override
+//    @Override
     public void removeOrphanPhotos() {
         final var photosDeleted = photoRepository.deleteAllByElementIsNull();
-        log.info("{} photos deleted", photosDeleted);
+//        log.info("{} photos deleted", photosDeleted);
     }
 }
