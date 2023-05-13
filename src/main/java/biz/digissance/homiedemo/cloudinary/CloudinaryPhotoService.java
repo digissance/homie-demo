@@ -1,27 +1,30 @@
-package biz.digissance.homiedemo.service;
+package biz.digissance.homiedemo.cloudinary;
 
-import biz.digissance.homiedemo.cloudinary.PhotoUpload;
 import biz.digissance.homiedemo.domain.PhotoEntity;
 import biz.digissance.homiedemo.repository.ElementEntityRepository;
 import biz.digissance.homiedemo.repository.PhotoRepository;
+import biz.digissance.homiedemo.service.photo.PhotoService;
 import com.cloudinary.Cloudinary;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Slf4j
 @Transactional
-public class ElementServiceImpl implements ElementService {
+public class CloudinaryPhotoService implements PhotoService {
 
     private final ElementEntityRepository elementEntityRepository;
     private final PhotoRepository photoRepository;
     private final Cloudinary cloudinary;
+    private final String cloudinaryFolder = "homie/";
 
-    public ElementServiceImpl(final ElementEntityRepository elementEntityRepository,
-                              final PhotoRepository photoRepository,
-                              final Cloudinary cloudinary) {
+    public CloudinaryPhotoService(final ElementEntityRepository elementEntityRepository,
+                                  final PhotoRepository photoRepository,
+                                  final Cloudinary cloudinary) {
         this.elementEntityRepository = elementEntityRepository;
         this.photoRepository = photoRepository;
         this.cloudinary = cloudinary;
@@ -30,13 +33,11 @@ public class ElementServiceImpl implements ElementService {
     @Override
     @SneakyThrows
     public void addPhotoToElement(final Long id, final PhotoUpload photoUpload, final Authentication auth) {
-//        PhotoUploadValidator validator = new PhotoUploadValidator();
-//        validator.validate(photoUpload, result);
         final var elementEntity = elementEntityRepository.findById(id).orElseThrow();
         Map uploadResult = null;
         if (photoUpload.getFile() != null && !photoUpload.getFile().isEmpty()) {
             uploadResult = cloudinary.uploader().upload(photoUpload.getFile().getBytes(),
-                    Map.of("folder", "homie/" + auth.getName() + "/" + elementEntity.getSpace().getId()+"/",
+                    Map.of("folder", cloudinaryFolder + auth.getName() + "/" + elementEntity.getSpace().getId() + "/",
                             "resource_type", "auto"));
             photoUpload.setPublicId((String) uploadResult.get("public_id"));
             Object version = uploadResult.get("version");
@@ -52,14 +53,39 @@ public class ElementServiceImpl implements ElementService {
             photoUpload.setSecureURL((String) uploadResult.get("secure_url"));
         }
 
+        Optional.ofNullable(elementEntity.getPhoto())
+                .ifPresent(photo -> {
+                    photo.setElement(null);
+                    photoRepository.saveAndFlush(photo);
+                });
+
         PhotoEntity photoEntity = new PhotoEntity();
         photoEntity.setTitle(elementEntity.getName());
         photoEntity.setUpload(photoUpload);
         photoEntity.setSecureURL(photoUpload.getSecureURL());
-        photoEntity.setElement(elementEntity);
 
+        photoEntity.setElement(elementEntity);
         elementEntity.setPhoto(photoEntity);
-        elementEntityRepository.save(elementEntity);
+
         photoRepository.save(photoEntity);
+        elementEntityRepository.save(elementEntity);
+    }
+
+    @Override
+    public void removeOrphanPhotos() {
+        photoRepository.findByElementIsNull().forEach(this::removePhoto);
+    }
+
+    @SneakyThrows
+    private void removePhoto(final PhotoEntity photoEntity) {
+        final var publicId = photoEntity.getStoredFile().getPublicId();
+        Map result = cloudinary.uploader().destroy(publicId, Collections.emptyMap());
+        if (result.get("result").equals("ok")) {
+            photoRepository.delete(photoEntity);
+            log.info("photo deleted {}", photoEntity);
+        } else {
+            log.error("Image not deleted from cloudinary {}", photoEntity);
+        }
+
     }
 }

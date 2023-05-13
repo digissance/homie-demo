@@ -1,4 +1,4 @@
-package biz.digissance.homiedemo.service;
+package biz.digissance.homiedemo.service.jwt;
 
 import biz.digissance.homiedemo.security.MyUser;
 import jakarta.servlet.http.Cookie;

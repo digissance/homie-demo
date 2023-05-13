@@ -8,6 +8,8 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreRemove;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,6 +45,13 @@ public abstract class ElementEntity extends BaseEntity {
     @PrePersist
     private void calculatePath() {
         this.path = internalCalculatePath().toLowerCase();
+    }
+
+    @PreRemove
+    private void removeFromPhoto() {
+        Optional.ofNullable(this.photo).ifPresent(photo -> {
+            photo.setElement(null);
+        });
     }
 
     protected abstract String internalCalculatePath();

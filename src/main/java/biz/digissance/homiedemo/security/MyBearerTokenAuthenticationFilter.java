@@ -1,6 +1,6 @@
 package biz.digissance.homiedemo.security;
 
-import biz.digissance.homiedemo.service.TokenService;
+import biz.digissance.homiedemo.service.jwt.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

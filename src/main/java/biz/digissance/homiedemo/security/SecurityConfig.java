@@ -4,7 +4,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 import biz.digissance.homiedemo.domain.UserEntity;
 import biz.digissance.homiedemo.repository.UserEntityRepository;
-import biz.digissance.homiedemo.service.TokenService;
+import biz.digissance.homiedemo.service.jwt.TokenService;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import jakarta.servlet.http.Cookie;
 import java.util.Arrays;

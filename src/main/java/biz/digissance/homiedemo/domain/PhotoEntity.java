@@ -28,8 +28,8 @@ public class PhotoEntity extends BaseEntity {
     @Basic
     private String secureURL;
 
+    @OneToOne
     @ToString.Exclude
-    @OneToOne(optional = false)
     private ElementEntity element;
 
     @Transient
