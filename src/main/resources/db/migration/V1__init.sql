@@ -5,7 +5,7 @@ create table user_entity
 (
     id            bigint       not null,
     identifier    varchar(36)  not null
-        constraint uk_ibvyj8d7oyx5fhmxua32wmygv
+        constraint uk_user_entity_identifier
             unique,
     created_by    varchar(255),
     created_date  timestamp(6) with time zone,
@@ -14,7 +14,7 @@ create table user_entity
     version       bigint,
     password      varchar(255) not null,
     username      varchar(36)  not null
-        constraint uk_2jsk4eakd0rmvybo409wgwxuw
+        constraint uk_user_entity_username
             unique,
     constraint user_entity_pkey
         primary key (id, identifier)
@@ -34,18 +34,18 @@ create table element_entity
     description      varchar(255),
     name             varchar(255),
     path             varchar(255)
-        constraint uk_gnja8ur19e9fxpq92ak78xwl4
+        constraint uk_element_entity_path
             unique,
     photo_id         bigint,
     space_id         bigint      not null
-        constraint fk3o90lm15i382q4n9pjy4ncl8t
+        constraint fk_element_entity_space_id
             references element_entity,
     parent_id        bigint
-        constraint fkissq0epjfje1c170e9ffut3sj
+        constraint fk_element_entity_parent_id
             references element_entity,
     owner_id         bigint,
     owner_identifier varchar(36),
-    constraint fkpxra4jcx4qa31vusoo78mlclp
+    constraint fk_element_entity_owner
         foreign key (owner_id, owner_identifier) references user_entity
 );
 
@@ -62,14 +62,14 @@ create table photo_entity
     image         varchar(255),
     secureurl     varchar(255),
     title         varchar(255),
-    element_id    bigint not null
-        constraint uk_irc53fre18fi2ucld9nb43olq
+    element_id    bigint
+        constraint uk_photo_entity_element_id
             unique
-        constraint fke5mvlpxqyfiq147ciq0k2o3v6
+        constraint fk_photo_entity_element_id
             references element_entity
 );
 
 alter table element_entity
-    add constraint fk13b3jxl1bog10bxtklqh3ca8k
+    add constraint fk_element_id_photo_id
         foreign key (photo_id) references photo_entity;
 

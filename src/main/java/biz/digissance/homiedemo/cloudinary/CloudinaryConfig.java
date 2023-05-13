@@ -1,12 +1,17 @@
 package biz.digissance.homiedemo.cloudinary;
 
+import biz.digissance.homiedemo.repository.ElementEntityRepository;
+import biz.digissance.homiedemo.repository.PhotoRepository;
+import biz.digissance.homiedemo.service.photo.PhotoService;
 import com.cloudinary.Cloudinary;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
+@Profile("cloudinary")
 public class CloudinaryConfig {
 
     @Bean
@@ -18,5 +23,12 @@ public class CloudinaryConfig {
                 "api_key", apiKey,
                 "api_secret", apiSecret);
         return new Cloudinary(config);
+    }
+
+    @Bean
+    public PhotoService cloudinaryPhotoService(
+            final ElementEntityRepository elementRepository,
+            final PhotoRepository photoRepository, final Cloudinary cloudinary) {
+        return new CloudinaryPhotoService(elementRepository, photoRepository, cloudinary);
     }
 }

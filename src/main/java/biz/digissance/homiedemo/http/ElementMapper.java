@@ -17,7 +17,6 @@ import biz.digissance.homiedemo.http.dto.StorageDto;
 import biz.digissance.homiedemo.http.dto.UserDto;
 import biz.digissance.homiedemo.repository.ElementEntityRepository;
 import biz.digissance.homiedemo.repository.SpaceEntityRepository;
-import com.cloudinary.Cloudinary;
 import java.util.Optional;
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
@@ -38,8 +37,6 @@ public abstract class ElementMapper {
     private SpaceEntityRepository spaceEntityRepository;
     @Autowired
     private ElementEntityRepository elementEntityRepository;
-    @Autowired
-    private Cloudinary cloudinary;
 
     @Mapping(target = "password", ignore = true)
     public abstract UserDto toUserDto(final UserEntity user);
