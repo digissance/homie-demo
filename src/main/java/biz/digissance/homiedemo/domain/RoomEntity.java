@@ -23,9 +23,4 @@ public class RoomEntity extends ElementEntity implements RoomOrStorage {
     @ToString.Exclude
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     private Set<StuffEntity> elements = new HashSet<>();
-
-    @Override
-    protected String internalCalculatePath() {
-        return this.getSpace().getPath().concat("/").concat(this.getName());
-    }
 }

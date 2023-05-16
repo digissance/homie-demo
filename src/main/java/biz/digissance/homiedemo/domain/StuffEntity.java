@@ -19,9 +19,4 @@ public abstract class StuffEntity extends ElementEntity {
     @ToString.Exclude
     @ManyToOne(targetEntity = ElementEntity.class)
     private RoomOrStorage parent;
-
-    @Override
-    protected String internalCalculatePath() {
-        return this.parent.getPath().concat("/").concat(this.getName());
-    }
 }

@@ -8,7 +8,7 @@ primary_region = "mad"
 processes = []
 
 [build]
-  image = "ghcr.io/digissance/homie-demo:0.0.19"
+  image = "ghcr.io/digissance/homie-demo:latest"
 
 [[services]]
   internal_port = 8080
@@ -27,3 +27,13 @@ processes = []
   [[services.ports]]
     handlers = ["tls", "http"]
     port = 443
+
+  [[services.http_checks]]
+    interval = 10000
+    grace_period = "5s"
+    method = "get"
+    path = "/actuator/health/liveness"
+    protocol = "http"
+    restart_limit = 0
+    timeout = 2000
+    tls_skip_verify = false

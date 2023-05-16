@@ -79,7 +79,7 @@ public class SpaceServiceImpl implements SpaceService {
         Map<Long, ElementDto> elementDtoMap = new HashMap<>();
         elementEntityRepository.findBySpaceId(spaceId)
                 .stream()
-                .sorted(Comparator.comparing(ElementEntity::getPath))
+                .sorted(Comparator.comparing(ElementEntity::getId))
                 .forEach(p -> consumerMap.get(p.getClass()).accept(p, elementDtoMap));
         return (SpaceDto) elementDtoMap.get(spaceId);
     }
