@@ -57,6 +57,7 @@ dependencies {
     testImplementation("io.cucumber:cucumber-junit-platform-engine:$cucumberVersion")
     testImplementation("io.cucumber:cucumber-java:$cucumberVersion")
     testImplementation("io.cucumber:cucumber-spring:$cucumberVersion")
+    testImplementation("org.apache.httpcomponents.client5:httpclient5:5.2.1")
 
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'

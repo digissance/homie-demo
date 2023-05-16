@@ -11,6 +11,7 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,6 +50,13 @@ public class SpaceController {
                 .path("/rooms/{id}")
                 .buildAndExpand(Map.of("id", room.getId()))
                 .toUri()).body(room);
+    }
+
+    @PatchMapping("/{id}")
+    public final ResponseEntity<SpaceDto> editSpace(final @PathVariable long id,
+                                                   final @RequestBody CreateElementRequest request) {
+        final var space = service.editSpace(id, request);
+        return ResponseEntity.ok(space);
     }
 
     @GetMapping("/{id}/rooms")

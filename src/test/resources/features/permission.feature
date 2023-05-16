@@ -1,4 +1,4 @@
-Feature: Delete rooms storage and items
+Feature: Check permissions when deleting rooms storage and items
 
   Background:
     Given user with name 'Gus'

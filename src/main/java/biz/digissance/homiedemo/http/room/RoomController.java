@@ -3,6 +3,7 @@ package biz.digissance.homiedemo.http.room;
 import biz.digissance.homiedemo.domain.StuffEntity;
 import biz.digissance.homiedemo.http.dto.CreateElementRequest;
 import biz.digissance.homiedemo.http.dto.ItemDto;
+import biz.digissance.homiedemo.http.dto.RoomDto;
 import biz.digissance.homiedemo.http.dto.StorageDto;
 import biz.digissance.homiedemo.repository.StuffEntityRepository;
 import biz.digissance.homiedemo.service.RoomService;
@@ -11,6 +12,7 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,6 +53,13 @@ public class RoomController {
                 .path("/storage/{id}")
                 .buildAndExpand(Map.of("id", storage.getId()))
                 .toUri()).body(storage);
+    }
+
+    @PatchMapping("/{id}")
+    public final ResponseEntity<RoomDto> editRoom(final @PathVariable long id,
+                                                  final @RequestBody CreateElementRequest request) {
+        final var room = roomService.editRoom(id, request);
+        return ResponseEntity.ok(room);
     }
 
     @GetMapping("/{id}/elements")

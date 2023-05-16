@@ -1,9 +1,13 @@
 package biz.digissance.homiedemo.http.item;
 
+import biz.digissance.homiedemo.http.dto.CreateElementRequest;
+import biz.digissance.homiedemo.http.dto.ItemDto;
 import biz.digissance.homiedemo.service.ItemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,5 +25,12 @@ public class ItemController {
     public final ResponseEntity<Void> deleteStorage(final @PathVariable long id) {
         itemService.deleteItem(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}")
+    public final ResponseEntity<ItemDto> editItem(final @PathVariable long id,
+                                                  final @RequestBody CreateElementRequest request) {
+        final var item = itemService.editItem(id, request);
+        return ResponseEntity.ok(item);
     }
 }

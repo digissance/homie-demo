@@ -84,6 +84,13 @@ public class SpaceServiceImpl implements SpaceService {
         return (SpaceDto) elementDtoMap.get(spaceId);
     }
 
+    @Override
+    public SpaceDto editSpace(final long spaceId, final CreateElementRequest request) {
+        final var spaceEntity = spaceEntityRepository.findById(spaceId).orElseThrow();
+        mapper.toSpaceEntityForUpdate(request, spaceEntity);
+        return mapper.toSpaceDto(spaceEntityRepository.save(spaceEntity));
+    }
+
     private void handle(SpaceEntity space, Map<Long, ElementDto> e) {
         final var spaceDto = mapper.toSpaceDto(space);
         e.put(space.getId(), spaceDto);
