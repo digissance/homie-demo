@@ -16,6 +16,7 @@ env:
   DOCKER_USERNAME: ${{ github.actor }}
   DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
   GIT_COMMIT: ${{ github.sha }}
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
 jobs:
   build-and-push-image:
@@ -72,3 +73,14 @@ jobs:
         run: |
           git config --global push.followTags true
           git push
+
+      - name: Retrieve version
+        id: version
+        run: |
+          echo "APP_VERSION=$(./gradlew getCurrentVersion | grep -v -e '^$\|^>\|^BUILD')" >> $GITHUB_ENV
+
+      - name: Install flyctl via https://github.com/superfly/flyctl-actions
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy our Spring Boot app to fly.io
+        run: flyctl deploy --image ghcr.io/digissance/homie-demo:${{ env.APP_VERSION }}
