@@ -6,8 +6,6 @@ public interface RoomOrStorage {
 
     Long getId();
 
-    String getPath();
-
     Set<StuffEntity> getElements();
 
     SpaceEntity getSpace();

@@ -22,9 +22,4 @@ public class SpaceEntity extends ElementEntity {
     @ToString.Exclude
     @OneToMany(mappedBy = "space", orphanRemoval = true)
     private Set<RoomEntity> rooms;
-
-    @Override
-    protected String internalCalculatePath() {
-        return "/".concat(this.getOwner().getIdentifier().concat("/").concat(this.getName()));
-    }
 }

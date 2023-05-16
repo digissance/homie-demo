@@ -10,6 +10,7 @@ import jakarta.servlet.http.Cookie;
 import java.util.Arrays;
 import java.util.Optional;
 import javax.crypto.spec.SecretKeySpec;
+import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +36,8 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
 
 @Configuration(proxyBeanMethods = false)
@@ -74,11 +77,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(
-            HttpSecurity http,
-            TokenService tokenService,
-            DaoAuthenticationProvider daoAuthenticationProvider,
+            final HttpSecurity http,
+            final TokenService tokenService,
+            final DaoAuthenticationProvider daoAuthenticationProvider,
             final UserDetailsService userDetailsService,
-            JwtDecoder jwtDecoder)
+            final PersistentTokenRepository persistentTokenRepository)
             throws Exception {
 
         final BearerTokenResolver bearerTokenResolver = request ->
@@ -100,6 +103,7 @@ public class SecurityConfig {
                     r.key(jwtKey);
                     r.alwaysRemember(true);
                     r.userDetailsService(userDetailsService);
+                    r.tokenRepository(persistentTokenRepository);
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(oauth2 -> {
@@ -140,4 +144,10 @@ public class SecurityConfig {
         return defaultMethodSecurityExpressionHandler;
     }
 
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository(final DataSource dataSource) {
+        final var jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        return jdbcTokenRepository;
+    }
 }

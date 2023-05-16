@@ -36,16 +36,9 @@ public abstract class ElementEntity extends BaseEntity {
 
     private String name;
     private String description;
-    @Column(unique = true)
-    private String path;
 
     @OneToOne
     private PhotoEntity photo;
-
-    @PrePersist
-    private void calculatePath() {
-        this.path = internalCalculatePath().toLowerCase();
-    }
 
     @PreRemove
     private void removeFromPhoto() {
@@ -53,6 +46,4 @@ public abstract class ElementEntity extends BaseEntity {
             photo.setElement(null);
         });
     }
-
-    protected abstract String internalCalculatePath();
 }

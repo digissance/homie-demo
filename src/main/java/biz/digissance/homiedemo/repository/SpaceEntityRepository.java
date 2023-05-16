@@ -8,8 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface SpaceEntityRepository extends JpaRepository<SpaceEntity, Long> {
     List<SpaceEntity> findByOwnerId(long ownerId);
 
-    Optional<SpaceEntity> findByIdAndPathStartingWith(long ownerId, final String startOfPath);
-
     Optional<SpaceEntity> findByIdAndOwner_Identifier(long id, final String ownerIdentifier);
 
     List<SpaceEntity> findByOwnerIdentifier(String ownerId);
