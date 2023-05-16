@@ -77,7 +77,7 @@ jobs:
       - name: Retrieve version
         id: version
         run: |
-          echo "APP_VERSION=$(./gradlew currentVersionNoHash | grep -v -e '^$\|^>\|^BUILD')" >> $GITHUB_ENV
+          echo "APP_VERSION=$(./gradlew getCurrentVersionNoHash | grep -v -e '^$\|^>\|^BUILD')" >> $GITHUB_ENV
 
       - name: Install flyctl via https://github.com/superfly/flyctl-actions
         uses: superfly/flyctl-actions/setup-flyctl@master
