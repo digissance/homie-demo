@@ -104,7 +104,9 @@ jib {
 }
 
 task getCurrentVersion {
-    print "${semver.version}-$gitHash"
+    doFirst {
+        println "${semver.version}-$gitHash"
+    }
 }
 
 testlogger {
@@ -130,6 +132,9 @@ task cucumber() {
     }
 }
 
-task currentVersionNoHash {
-    "${semver.version}"
+
+task getCurrentVersionNoHash {
+    doFirst {
+        println "${semver.version}"
+    }
 }
