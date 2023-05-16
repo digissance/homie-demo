@@ -11,6 +11,7 @@ import biz.digissance.homiedemo.service.UserService;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,10 +97,15 @@ public class MyCache {
     }
 
     public void cleanAll() {
-        spaceCache.forEach((s, spaceDto) -> elementEntityRepository.deleteById(spaceDto.getId()));
+        elementEntityRepository.deleteAll();
         userEntityRepository.deleteAll();
         userCache.clear();
         spaceCache.clear();
         elementsCache.clear();
+    }
+
+    public Optional<ElementDto> findElementByName(final String name) {
+        return elementsCache.values().stream()
+                .filter(e -> name.equals(e.getName())).findFirst();
     }
 }

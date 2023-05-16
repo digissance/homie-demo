@@ -22,6 +22,7 @@ import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.SubclassExhaustiveStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,18 @@ public abstract class ElementMapper {
 
     @Mapping(target = "owner", ignore = true)
     public abstract SpaceEntity toSpaceEntity(CreateSpaceRequest space);
+
+    public abstract void toSpaceEntityForUpdate(final CreateElementRequest source,
+                                                final @MappingTarget SpaceEntity target);
+
+    public abstract void toRoomEntityForUpdate(final CreateElementRequest request,
+                                               final @MappingTarget RoomEntity roomEntity);
+
+    public abstract void toStorageEntityForUpdate(final CreateElementRequest request,
+                                                  final @MappingTarget StorageEntity storageEntity);
+
+    public abstract void toItemEntityForUpdate(final CreateElementRequest request,
+                                               final @MappingTarget ItemEntity itemEntity);
 
     public RoomEntity toRoomEntity(final long parentId, final CreateElementRequest request) {
         final var parent = spaceEntityRepository.findById(parentId).orElseThrow();

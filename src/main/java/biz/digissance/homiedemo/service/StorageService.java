@@ -15,4 +15,7 @@ public interface StorageService {
 
     @PreAuthorize("hasPermission(#id,'EDIT')")
     void deleteStorage(long id);
+
+    @PreAuthorize("hasPermission(#id,'EDIT')")
+    StorageDto editStorage(long id, CreateElementRequest request);
 }

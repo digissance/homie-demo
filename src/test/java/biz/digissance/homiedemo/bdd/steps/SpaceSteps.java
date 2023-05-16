@@ -52,7 +52,7 @@ public class SpaceSteps {
         final var user = myCache.getCurrentUser();
         assertThat(user).isNotNull();
         assertThat(spaceRequest).isNotNull();
-        final var actual = spaceRequest.createSpace(user);
+        final var actual = spaceRequest.createSpace();
         assertThat(actual)
                 .usingRecursiveComparison()
                 .ignoringActualNullFields()
@@ -95,7 +95,7 @@ public class SpaceSteps {
     public void userCreatesFollowingStorageUnitsInDifferentRooms(List<StorageRequest> storageRequests) {
         expectedStorage = storageRequests;
         storageRequests.forEach(request -> {
-            final var parent = myCache.findRoomByName(request.room());
+            final var parent = myCache.findRoomByName(request.parent().getName());
             final var actual = request.create(parent);
             parent.getStuff().add(actual);
         });
@@ -120,7 +120,7 @@ public class SpaceSteps {
     public void user_creates_following_items_in_different_storage_units(List<ItemRequest> itemRequests) {
         expectedItems = itemRequests;
         itemRequests.forEach(s -> {
-            final var parent = myCache.findRoomByName(s.parent());
+            final var parent = myCache.findRoomByName(s.parent().getName());
             final var actual = s.create(parent);
             parent.getStuff().add(actual);
         });

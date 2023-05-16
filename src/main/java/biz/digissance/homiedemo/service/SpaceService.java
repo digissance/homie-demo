@@ -18,4 +18,7 @@ public interface SpaceService {
     List<RoomEntity> getRooms(final long spaceId);
 
     SpaceDto getSpaceTree(final long spaceId);
+
+    @PreAuthorize("hasPermission(#spaceId,'EDIT')")
+    SpaceDto editSpace(long spaceId, CreateElementRequest request);
 }

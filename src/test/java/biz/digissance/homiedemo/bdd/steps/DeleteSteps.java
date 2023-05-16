@@ -4,11 +4,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import biz.digissance.homiedemo.bdd.requests.ItemRequest;
 import biz.digissance.homiedemo.bdd.requests.RoomRequest;
-import biz.digissance.homiedemo.bdd.requests.SpaceRequest;
 import biz.digissance.homiedemo.bdd.requests.StorageRequest;
 import biz.digissance.homiedemo.http.dto.ElementDto;
 import biz.digissance.homiedemo.http.dto.ItemDto;
 import biz.digissance.homiedemo.http.dto.RoomDto;
+import biz.digissance.homiedemo.http.dto.RoomOrStorageDto;
 import biz.digissance.homiedemo.http.dto.SomethingHoldingElements;
 import biz.digissance.homiedemo.http.dto.SpaceDto;
 import biz.digissance.homiedemo.http.dto.StorageDto;
@@ -40,7 +40,6 @@ public class DeleteSteps {
 
     @And("space home with rooms and items are created")
     public void spaceHomeWithRoomsAndItems() throws IOException {
-        final var currentUser = cache.getCurrentUser();
         final var jsonResource = new ClassPathResource("/json/my_home.json");
         final var spaceDto = objectMapper.readValue(jsonResource.getInputStream(), SpaceDto.class);
         spaceDto.visit(new Consumer<>() {
@@ -49,30 +48,24 @@ public class DeleteSteps {
 
             @Override
             public void accept(final ElementDto elementDto) {
+
                 if (elementDto instanceof SpaceDto space) {
-                    final var spaceDto = new SpaceRequest(restTemplate, space.getName(), space.getDescription())
-                            .createSpace(currentUser);
-                    cache.setSpaces(spaceDto);
+                    final var spaceDto = ElementType.SPACE.getRequest(space).create();
+                    cache.setSpaces((SpaceDto) spaceDto);
                 }
                 if (elementDto instanceof RoomDto room) {
-                    final var space = cache.getSpace(currentParent.getName());
-                    final var roomDto = new RoomRequest(restTemplate, room.getName(), room.getDescription())
-                            .create(space);
-                    space.getRooms().add(roomDto);
+                    final var space = (SpaceDto) cache.findElementByName(currentParent.getName()).orElseThrow();
+                    ((RoomRequest) ElementType.ROOM.getRequest(room)).create(space);
                 }
                 if (elementDto instanceof StorageDto storage) {
-                    final var roomByName = cache.findRoomByName(currentParent.getName());
-                    final var storageDto = new StorageRequest(restTemplate, currentParent.getName(), storage.getName(),
-                            storage.getDescription())
-                            .create(roomByName);
-                    roomByName.getStuff().add(storageDto);
+                    final var parent =
+                            (RoomOrStorageDto) cache.findElementByName(currentParent.getName()).orElseThrow();
+                    ((StorageRequest) ElementType.STORAGE.getRequest(storage)).create(parent);
                 }
                 if (elementDto instanceof ItemDto item) {
-                    final var roomByName = cache.findRoomByName(currentParent.getName());
-                    final var itemDto = new ItemRequest(restTemplate, currentParent.getName(), item.getName(),
-                            item.getDescription())
-                            .create(roomByName);
-                    roomByName.getStuff().add(itemDto);
+                    final var parent =
+                            (RoomOrStorageDto) cache.findElementByName(currentParent.getName()).orElseThrow();
+                    ((ItemRequest) ElementType.ITEM.getRequest(item)).create(parent);
                 }
                 if (elementDto instanceof SomethingHoldingElements parent) {
                     currentParent = elementDto;
