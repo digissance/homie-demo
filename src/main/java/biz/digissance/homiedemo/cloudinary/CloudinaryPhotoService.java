@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,14 +23,16 @@ public class CloudinaryPhotoService implements PhotoService {
     private final ElementEntityRepository elementEntityRepository;
     private final PhotoRepository photoRepository;
     private final Cloudinary cloudinary;
-    private final String cloudinaryFolder = "homie/";
+    private final String cloudinaryFolder;
 
     public CloudinaryPhotoService(final ElementEntityRepository elementEntityRepository,
                                   final PhotoRepository photoRepository,
-                                  final Cloudinary cloudinary) {
+                                  final Cloudinary cloudinary,
+                                  final @Value("${app.cloudinary.folder-name:homie-prod}") String cloudinaryFolder) {
         this.elementEntityRepository = elementEntityRepository;
         this.photoRepository = photoRepository;
         this.cloudinary = cloudinary;
+        this.cloudinaryFolder = cloudinaryFolder;
     }
 
     @Override
@@ -38,9 +41,11 @@ public class CloudinaryPhotoService implements PhotoService {
         final var elementEntity = elementEntityRepository.findById(id).orElseThrow();
         Map uploadResult = null;
         if (photoUpload.getFile() != null && !photoUpload.getFile().isEmpty()) {
+            final var authorId = auth.getName();
+            final var spaceId = elementEntity.getSpace().getId();
+            final var destinationFolder = cloudinaryFolder + "/" + authorId + "/" + spaceId + "/";
             uploadResult = cloudinary.uploader().upload(photoUpload.getFile().getBytes(),
-                    Map.of("folder", cloudinaryFolder + auth.getName() + "/" + elementEntity.getSpace().getId() + "/",
-                            "resource_type", "auto"));
+                    Map.of("folder", destinationFolder, "resource_type", "auto"));
             photoUpload.setPublicId((String) uploadResult.get("public_id"));
             Object version = uploadResult.get("version");
             if (version instanceof Integer) {
@@ -53,24 +58,26 @@ public class CloudinaryPhotoService implements PhotoService {
             photoUpload.setFormat((String) uploadResult.get("format"));
             photoUpload.setResourceType((String) uploadResult.get("resource_type"));
             photoUpload.setSecureURL((String) uploadResult.get("secure_url"));
+
+            Optional.ofNullable(elementEntity.getPhoto())
+                    .ifPresent(photo -> {
+                        photo.setElement(null);
+                        photoRepository.saveAndFlush(photo);
+                    });
+
+            PhotoEntity photoEntity = new PhotoEntity();
+            photoEntity.setTitle(elementEntity.getName());
+            photoEntity.setUpload(photoUpload);
+            photoEntity.setSecureURL(photoUpload.getSecureURL());
+
+            photoEntity.setElement(elementEntity);
+            elementEntity.setPhoto(photoEntity);
+
+            photoRepository.save(photoEntity);
+            elementEntityRepository.save(elementEntity);
+        } else {
+            throw new IllegalArgumentException("Cannot upload photo: " + photoUpload);
         }
-
-        Optional.ofNullable(elementEntity.getPhoto())
-                .ifPresent(photo -> {
-                    photo.setElement(null);
-                    photoRepository.saveAndFlush(photo);
-                });
-
-        PhotoEntity photoEntity = new PhotoEntity();
-        photoEntity.setTitle(elementEntity.getName());
-        photoEntity.setUpload(photoUpload);
-        photoEntity.setSecureURL(photoUpload.getSecureURL());
-
-        photoEntity.setElement(elementEntity);
-        elementEntity.setPhoto(photoEntity);
-
-        photoRepository.save(photoEntity);
-        elementEntityRepository.save(elementEntity);
     }
 
     @Override

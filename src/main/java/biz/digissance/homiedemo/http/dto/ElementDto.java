@@ -21,7 +21,6 @@ public abstract class ElementDto {
     private Long id;
     private String name;
     private String description;
-    private String path;
     private String photoSecureURL;
 
     public final void visit(Consumer<ElementDto> visitor) {

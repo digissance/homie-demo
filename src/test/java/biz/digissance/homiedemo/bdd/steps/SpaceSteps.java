@@ -64,7 +64,7 @@ public class SpaceSteps {
     public void list_spaces_and_sees(List<SpaceRequest> spaces) {
         final var user = myCache.getCurrentUser();
         final var result =
-                restTemplate.getForObject("/users/{id}/spaces", SpaceDto[].class, Map.of("id", user.getIdentifier()));
+                restTemplate.getForObject("/spaces", SpaceDto[].class, Map.of("id", user.getIdentifier()));
         myCache.setSpaces(result);
         assertThat(result)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("path", "id")

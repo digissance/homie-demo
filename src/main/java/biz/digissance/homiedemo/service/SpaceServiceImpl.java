@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,6 +91,12 @@ public class SpaceServiceImpl implements SpaceService {
         final var spaceEntity = spaceEntityRepository.findById(spaceId).orElseThrow();
         mapper.toSpaceEntityForUpdate(request, spaceEntity);
         return mapper.toSpaceDto(spaceEntityRepository.save(spaceEntity));
+    }
+
+    @Override
+    public List<SpaceDto> getSpaces(final Authentication auth) {
+        return spaceEntityRepository.findByOwnerIdentifier(auth.getName())
+                .stream().map(mapper::toSpaceDto).collect(Collectors.toList());
     }
 
     private void handle(SpaceEntity space, Map<Long, ElementDto> e) {

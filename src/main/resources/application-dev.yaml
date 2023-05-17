@@ -39,6 +39,8 @@ management:
       probes:
         enabled: true
 app:
+  cloudinary:
+    folder-name: "homie-dev"
   security:
     cookie:
       secured: false

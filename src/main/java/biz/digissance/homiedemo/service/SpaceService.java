@@ -7,6 +7,7 @@ import biz.digissance.homiedemo.http.dto.RoomDto;
 import biz.digissance.homiedemo.http.dto.SpaceDto;
 import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 
 public interface SpaceService {
 
@@ -21,4 +22,6 @@ public interface SpaceService {
 
     @PreAuthorize("hasPermission(#spaceId,'EDIT')")
     SpaceDto editSpace(long spaceId, CreateElementRequest request);
+
+    List<SpaceDto> getSpaces(Authentication auth);
 }
