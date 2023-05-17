@@ -29,6 +29,13 @@ public class SpaceController {
         this.service = service;
     }
 
+
+    @GetMapping
+    public final ResponseEntity<List<SpaceDto>> getUserSpaces(Authentication auth) {
+        return ResponseEntity.ok(service.getSpaces(auth));
+    }
+
+
     @PostMapping
     public final ResponseEntity<SpaceDto> createSpace(
             final @RequestBody CreateSpaceRequest request,
