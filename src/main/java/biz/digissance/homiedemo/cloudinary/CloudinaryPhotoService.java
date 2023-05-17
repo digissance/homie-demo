@@ -81,13 +81,17 @@ public class CloudinaryPhotoService implements PhotoService {
     @SneakyThrows
     private void removePhoto(final PhotoEntity photoEntity) {
         final var publicId = photoEntity.getStoredFile().getPublicId();
-        Map result = cloudinary.uploader().destroy(publicId, Collections.emptyMap());
-        if (result.get("result").equals("ok")) {
+        if (publicId != null) {
+            Map result = cloudinary.uploader().destroy(publicId, Collections.emptyMap());
+            if (result.get("result").equals("ok")) {
+                photoRepository.delete(photoEntity);
+                log.info("photo deleted {}", photoEntity);
+            } else {
+                log.error("Image not deleted from cloudinary {}", photoEntity);
+            }
+        } else {
             photoRepository.delete(photoEntity);
             log.info("photo deleted {}", photoEntity);
-        } else {
-            log.error("Image not deleted from cloudinary {}", photoEntity);
         }
-
     }
 }
