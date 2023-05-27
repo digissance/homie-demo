@@ -33,36 +33,17 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-            - name: "SPRING_DATASOURCE_URL"
-              value: {{ .Values.app.database.url }}
-            - name: "SPRING_DATASOURCE_USERNAME"
-              value: {{ .Values.app.database.username }}
-            - name: "SPRING_DATASOURCE_PASSWORD"
-              value: {{ .Values.app.database.password }}
-            - name: "SPRING_PROFILES_ACTIVE"
-              value: "{{ .Values.app.spring.profile }}"
-            - name: "APP_JWT_KEY"
-              value: {{ .Values.app.jwt.key }}
-            - name: "CLOUDINARY_NAME"
-              value: "{{ .Values.app.cloudinary.name }}"
-            - name: "CLOUDINARY_API_KEY"
-              value: "{{ .Values.app.cloudinary.key }}"
-            - name: "CLOUDINARY_API_SECRET"
-              value: "{{ .Values.app.cloudinary.secret }}"
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 80
               protocol: TCP
           livenessProbe:
-            periodSeconds: 40
             httpGet:
-              path: /actuator/health/liveness
+              path: /
               port: http
           readinessProbe:
-            periodSeconds: 40
             httpGet:
-              path: /actuator/health/readiness
+              path: /
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
