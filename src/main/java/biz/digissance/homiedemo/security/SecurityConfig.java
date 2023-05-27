@@ -39,6 +39,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration(proxyBeanMethods = false)
 @EnableWebSecurity
@@ -94,7 +95,7 @@ public class SecurityConfig {
         final var bearerPostFilter = new MyBearerTokenAuthenticationFilter(http, tokenService);
         bearerPostFilter.setBearerTokenResolver(bearerTokenResolver);
         return http
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(c->c.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authenticationProvider(daoAuthenticationProvider)
                 .addFilterAfter(bearerPostFilter, RememberMeAuthenticationFilter.class)
