@@ -94,6 +94,7 @@ public class SecurityConfig {
         final var bearerPostFilter = new MyBearerTokenAuthenticationFilter(http, tokenService);
         bearerPostFilter.setBearerTokenResolver(bearerTokenResolver);
         return http
+                .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authenticationProvider(daoAuthenticationProvider)
                 .addFilterAfter(bearerPostFilter, RememberMeAuthenticationFilter.class)
@@ -112,7 +113,7 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/actuator/health/liveness", "/actuator/health/readiness").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users").anonymous()
                         .requestMatchers("/api/auth/token").hasRole("USER")
                         .anyRequest().hasAuthority("SCOPE_READ")
                 )

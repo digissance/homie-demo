@@ -5,13 +5,14 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Optional;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
+
+import java.io.IOException;
+import java.util.Optional;
 
 class MyBearerTokenAuthenticationFilter extends BearerTokenAuthenticationFilter {
     private final TokenService tokenService;
@@ -24,30 +25,22 @@ class MyBearerTokenAuthenticationFilter extends BearerTokenAuthenticationFilter 
     @Override
     protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
                                     final FilterChain filterChain) throws ServletException, IOException {
-        Optional.ofNullable(SecurityContextHolder.getContextHolderStrategy())
+        final var cookie = Optional.ofNullable(SecurityContextHolder.getContextHolderStrategy())
                 .map(SecurityContextHolderStrategy::getContext)
                 .map(SecurityContext::getAuthentication)
                 .filter(auth -> auth.getPrincipal() instanceof MyUser)
-                .map(tokenService::generateCookie)
-                .ifPresentOrElse(p -> {
-                    response.addCookie(p);
-                    request.setAttribute(SecurityConfig.J_SEC_COOKIE_NAME, p.getValue());
-                    try {
-                        if (request.getServletPath().equals("/api/auth/token")) {
-                            filterChain.doFilter(request, response);
-                        } else {
-                            super.doFilterInternal(request, response, filterChain);
-                        }
-                        request.removeAttribute(SecurityConfig.J_SEC_COOKIE_NAME);
-                    } catch (ServletException | IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }, () -> {
-                    try {
-                        filterChain.doFilter(request, response);
-                    } catch (IOException | ServletException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+                .map(tokenService::generateCookie);
+        if (cookie.isPresent()) {
+            response.addCookie(cookie.get());
+            request.setAttribute(SecurityConfig.J_SEC_COOKIE_NAME, cookie.get().getValue());
+            if (request.getServletPath().equals("/api/auth/token")) {
+                filterChain.doFilter(request, response);
+            } else {
+                super.doFilterInternal(request, response, filterChain);
+            }
+            request.removeAttribute(SecurityConfig.J_SEC_COOKIE_NAME);
+        } else {
+            filterChain.doFilter(request, response);
+        }
     }
 }
