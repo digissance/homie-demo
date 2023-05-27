@@ -1,16 +1,10 @@
 package biz.digissance.homiedemo.security;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import biz.digissance.homiedemo.domain.UserEntity;
 import biz.digissance.homiedemo.repository.UserEntityRepository;
 import biz.digissance.homiedemo.service.jwt.TokenService;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import jakarta.servlet.http.Cookie;
-import java.util.Arrays;
-import java.util.Optional;
-import javax.crypto.spec.SecretKeySpec;
-import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,11 +29,19 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
+import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+
+import javax.crypto.spec.SecretKeySpec;
+import javax.sql.DataSource;
+import java.util.Arrays;
+import java.util.Optional;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration(proxyBeanMethods = false)
 @EnableWebSecurity
@@ -84,18 +86,20 @@ public class SecurityConfig {
             final UserDetailsService userDetailsService,
             final PersistentTokenRepository persistentTokenRepository)
             throws Exception {
-
-        final BearerTokenResolver bearerTokenResolver = request ->
-                Optional.ofNullable(request.getCookies()).stream()
-                        .flatMap(Arrays::stream)
-                        .filter(cookie -> J_SEC_COOKIE_NAME.equals(cookie.getName()))
-                        .findFirst()
-                        .map(Cookie::getValue)
-                        .orElseGet(() -> (String) request.getAttribute(J_SEC_COOKIE_NAME));
+        final var defaultBearerDecoder = new DefaultBearerTokenResolver();
+        final BearerTokenResolver bearerTokenResolver = request -> {
+            final var token = Optional.ofNullable(request.getCookies()).stream()
+                    .flatMap(Arrays::stream)
+                    .filter(cookie -> J_SEC_COOKIE_NAME.equals(cookie.getName()))
+                    .findFirst()
+                    .map(Cookie::getValue)
+                    .orElseGet(() -> (String) request.getAttribute(J_SEC_COOKIE_NAME));
+            return Optional.ofNullable(token).orElseGet(() -> defaultBearerDecoder.resolve(request));
+        };
         final var bearerPostFilter = new MyBearerTokenAuthenticationFilter(http, tokenService);
         bearerPostFilter.setBearerTokenResolver(bearerTokenResolver);
         return http
-                .cors(c-> {
+                .cors(c -> {
                     final var corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
                     c.configurationSource(request -> corsConfiguration);
                 })
