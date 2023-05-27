@@ -95,7 +95,10 @@ public class SecurityConfig {
         final var bearerPostFilter = new MyBearerTokenAuthenticationFilter(http, tokenService);
         bearerPostFilter.setBearerTokenResolver(bearerTokenResolver);
         return http
-                .cors(c->c.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
+                .cors(c-> {
+                    final var corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+                    c.configurationSource(request -> corsConfiguration);
+                })
                 .csrf(AbstractHttpConfigurer::disable)
                 .authenticationProvider(daoAuthenticationProvider)
                 .addFilterAfter(bearerPostFilter, RememberMeAuthenticationFilter.class)
