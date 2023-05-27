@@ -101,6 +101,7 @@ public class SecurityConfig {
         return http
                 .cors(c -> {
                     final var corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+                    corsConfiguration.setAllowCredentials(true);
                     c.configurationSource(request -> corsConfiguration);
                 })
                 .csrf(AbstractHttpConfigurer::disable)
