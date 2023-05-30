@@ -84,7 +84,7 @@ jobs:
           timeout: 15m
 
   notify-job:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [ build-and-push-image ]
 #    if: ${{ always() && (needs.first-job.result == 'failure' || needs.second-job.result == 'failure') }}
     steps:
