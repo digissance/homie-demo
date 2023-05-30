@@ -19,6 +19,7 @@ public class StorageDto extends StuffDto implements RoomOrStorageDto, SomethingH
 
     @Builder.Default
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<StuffDto> stuff = new HashSet<>();
 
     @Override

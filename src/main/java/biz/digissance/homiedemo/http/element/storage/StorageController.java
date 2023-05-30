@@ -1,12 +1,10 @@
-package biz.digissance.homiedemo.http.room;
+package biz.digissance.homiedemo.http.element.storage;
 
 import biz.digissance.homiedemo.domain.StuffEntity;
 import biz.digissance.homiedemo.http.dto.CreateElementRequest;
 import biz.digissance.homiedemo.http.dto.ItemDto;
-import biz.digissance.homiedemo.http.dto.RoomDto;
 import biz.digissance.homiedemo.http.dto.StorageDto;
-import biz.digissance.homiedemo.repository.StuffEntityRepository;
-import biz.digissance.homiedemo.service.RoomService;
+import biz.digissance.homiedemo.service.element.StorageService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
@@ -21,23 +19,20 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/rooms")
-public class RoomController {
+@RequestMapping("/storage")
+public class StorageController {
 
-    private final StuffEntityRepository stuffEntityRepository;
-    private final RoomService roomService;
+    private final StorageService storageService;
 
-    public RoomController(final StuffEntityRepository stuffEntityRepository,
-                          final RoomService roomService) {
-        this.stuffEntityRepository = stuffEntityRepository;
-        this.roomService = roomService;
+    public StorageController(final StorageService storageService) {
+        this.storageService = storageService;
     }
 
     @PostMapping("/{id}/items")
     public final ResponseEntity<ItemDto> createItem(final @PathVariable long id,
                                                     final @RequestBody CreateElementRequest request,
                                                     final UriComponentsBuilder uri) {
-        final var item = roomService.createItem(id, request);
+        final var item = storageService.createItem(id, request);
         return ResponseEntity.created(uri
                 .path("/items/{id}")
                 .buildAndExpand(Map.of("id", item.getId()))
@@ -48,7 +43,7 @@ public class RoomController {
     public final ResponseEntity<StorageDto> createStorage(final @PathVariable long id,
                                                           final @RequestBody CreateElementRequest request,
                                                           final UriComponentsBuilder uri) {
-        final var storage = roomService.createStorage(id, request);
+        final var storage = storageService.createStorage(id, request);
         return ResponseEntity.created(uri
                 .path("/storage/{id}")
                 .buildAndExpand(Map.of("id", storage.getId()))
@@ -56,21 +51,22 @@ public class RoomController {
     }
 
     @PatchMapping("/{id}")
-    public final ResponseEntity<RoomDto> editRoom(final @PathVariable long id,
-                                                  final @RequestBody CreateElementRequest request) {
-        final var room = roomService.editRoom(id, request);
-        return ResponseEntity.ok(room);
+    public final ResponseEntity<StorageDto> editStorage(final @PathVariable long id,
+                                                        final @RequestBody CreateElementRequest request) {
+        final var storage = storageService.editStorage(id, request);
+        return ResponseEntity.ok(storage);
     }
 
     @GetMapping("/{id}/elements")
     public final ResponseEntity<List<StuffEntity>> getElements(final @PathVariable long id,
                                                                final UriComponentsBuilder uri) {
-        return ResponseEntity.ok(stuffEntityRepository.findByParentId(id));
+//        return ResponseEntity.ok(stuffEntityRepository.findByParentId(id));
+        throw new RuntimeException("not yet implemented");
     }
 
     @DeleteMapping("/{id}")
-    public final ResponseEntity<Void> deleteRoom(final @PathVariable long id) {
-        roomService.deleteRoom(id);
+    public final ResponseEntity<Void> deleteStorage(final @PathVariable long id) {
+        storageService.deleteStorage(id);
         return ResponseEntity.noContent().build();
     }
 }

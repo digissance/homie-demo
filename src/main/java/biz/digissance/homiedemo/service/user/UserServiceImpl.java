@@ -1,4 +1,4 @@
-package biz.digissance.homiedemo.service;
+package biz.digissance.homiedemo.service.user;
 
 import biz.digissance.homiedemo.domain.UserEntity;
 import biz.digissance.homiedemo.http.ElementMapper;

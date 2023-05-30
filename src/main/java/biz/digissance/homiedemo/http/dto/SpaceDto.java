@@ -1,14 +1,11 @@
 package biz.digissance.homiedemo.http.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 import java.util.HashSet;
 import java.util.Set;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
@@ -19,6 +16,7 @@ public class SpaceDto extends ElementDto implements SomethingHoldingElements {
 
     @Builder.Default
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<RoomDto> rooms = new HashSet<>();
 
     @Override

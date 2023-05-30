@@ -1,20 +1,13 @@
 package biz.digissance.homiedemo.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorColumn;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreRemove;
-import java.util.Optional;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -33,6 +26,10 @@ public abstract class ElementEntity extends BaseEntity {
     @ToString.Exclude
     @ManyToOne(optional = false)
     private UserEntity owner;
+
+    @ManyToOne
+    @ToString.Exclude
+    private ElementEntity from;
 
     private String name;
     private String description;

@@ -3,7 +3,7 @@ package biz.digissance.homiedemo.http.user;
 import biz.digissance.homiedemo.http.ElementMapper;
 import biz.digissance.homiedemo.http.dto.UserDto;
 import biz.digissance.homiedemo.repository.SpaceEntityRepository;
-import biz.digissance.homiedemo.service.UserService;
+import biz.digissance.homiedemo.service.user.UserService;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,11 +1,11 @@
-package biz.digissance.homiedemo.http.space;
+package biz.digissance.homiedemo.http.element.space;
 
 import biz.digissance.homiedemo.domain.RoomEntity;
 import biz.digissance.homiedemo.http.dto.CreateElementRequest;
 import biz.digissance.homiedemo.http.dto.CreateSpaceRequest;
 import biz.digissance.homiedemo.http.dto.RoomDto;
 import biz.digissance.homiedemo.http.dto.SpaceDto;
-import biz.digissance.homiedemo.service.SpaceService;
+import biz.digissance.homiedemo.service.element.SpaceService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;

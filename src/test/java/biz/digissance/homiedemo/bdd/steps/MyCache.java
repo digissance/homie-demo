@@ -7,7 +7,7 @@ import biz.digissance.homiedemo.http.dto.SpaceDto;
 import biz.digissance.homiedemo.http.dto.UserDto;
 import biz.digissance.homiedemo.repository.ElementEntityRepository;
 import biz.digissance.homiedemo.repository.UserEntityRepository;
-import biz.digissance.homiedemo.service.UserService;
+import biz.digissance.homiedemo.service.user.UserService;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -106,6 +106,6 @@ public class MyCache {
 
     public Optional<ElementDto> findElementByName(final String name) {
         return elementsCache.values().stream()
-                .filter(e -> name.equals(e.getName())).findFirst();
+                .filter(e -> name.equalsIgnoreCase(e.getName())).findFirst();
     }
 }

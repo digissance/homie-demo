@@ -1,31 +1,13 @@
 package biz.digissance.homiedemo.http;
 
-import biz.digissance.homiedemo.domain.ElementEntity;
-import biz.digissance.homiedemo.domain.ItemEntity;
-import biz.digissance.homiedemo.domain.PhotoEntity;
-import biz.digissance.homiedemo.domain.RoomEntity;
-import biz.digissance.homiedemo.domain.RoomOrStorage;
-import biz.digissance.homiedemo.domain.SpaceEntity;
-import biz.digissance.homiedemo.domain.StorageEntity;
-import biz.digissance.homiedemo.domain.UserEntity;
-import biz.digissance.homiedemo.http.dto.CreateElementRequest;
-import biz.digissance.homiedemo.http.dto.CreateSpaceRequest;
-import biz.digissance.homiedemo.http.dto.ItemDto;
-import biz.digissance.homiedemo.http.dto.RoomDto;
-import biz.digissance.homiedemo.http.dto.SpaceDto;
-import biz.digissance.homiedemo.http.dto.StorageDto;
-import biz.digissance.homiedemo.http.dto.UserDto;
+import biz.digissance.homiedemo.domain.*;
+import biz.digissance.homiedemo.http.dto.*;
 import biz.digissance.homiedemo.repository.ElementEntityRepository;
 import biz.digissance.homiedemo.repository.SpaceEntityRepository;
-import java.util.Optional;
-import org.mapstruct.CollectionMappingStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
-import org.mapstruct.SubclassExhaustiveStrategy;
+import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Optional;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
         subclassExhaustiveStrategy = SubclassExhaustiveStrategy.RUNTIME_EXCEPTION,
@@ -33,11 +15,17 @@ import org.springframework.beans.factory.annotation.Autowired;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
 public abstract class ElementMapper {
-
     @Autowired
     private SpaceEntityRepository spaceEntityRepository;
+
     @Autowired
     private ElementEntityRepository elementEntityRepository;
+
+    @SubclassMapping(target = SpaceDto.class, source = SpaceEntity.class)
+    @SubclassMapping(target = RoomDto.class, source = RoomEntity.class)
+    @SubclassMapping(target = StorageDto.class, source = StorageEntity.class)
+    @SubclassMapping(target = ItemDto.class, source = ItemEntity.class)
+    public abstract ElementDto toElementDto(ElementEntity source);
 
     @Mapping(target = "password", ignore = true)
     public abstract UserDto toUserDto(final UserEntity user);
@@ -84,28 +72,31 @@ public abstract class ElementMapper {
                 .description(request.getDescription())
                 .space(parent)
                 .owner(parent.getOwner())
+                .from(parent)
                 .build();
     }
 
     public ItemEntity toItemEntity(final Long parentId, final CreateElementRequest request) {
-        final var parent = (RoomOrStorage) elementEntityRepository.findById(parentId).orElseThrow();
+        final var parent = elementEntityRepository.findById(parentId).orElseThrow();
         return ItemEntity.builder()
                 .name(request.getName())
                 .description(request.getDescription())
-                .parent(parent)
+                .parent((RoomOrStorage) parent)
                 .space(parent.getSpace())
                 .owner(parent.getOwner())
+                .from(parent)
                 .build();
     }
 
     public StorageEntity toStorageEntity(final Long parentId, final CreateElementRequest request) {
-        final var parent = (RoomOrStorage) elementEntityRepository.findById(parentId).orElseThrow();
+        final var parent = elementEntityRepository.findById(parentId).orElseThrow();
         return StorageEntity.builder()
                 .name(request.getName())
                 .description(request.getDescription())
-                .parent(parent)
+                .parent((RoomOrStorage) parent)
                 .space(parent.getSpace())
                 .owner(parent.getOwner())
+                .from(parent)
                 .build();
     }
 
