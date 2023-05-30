@@ -84,6 +84,7 @@ jobs:
 
       - name: Deploy our Spring Boot app to fly.io
         run: flyctl deploy --image ghcr.io/digissance/homie-demo:${{ env.APP_VERSION }}
+
   notify-job:
     runs-on: ubuntu-latest
     needs: [ build-and-push-image ]
