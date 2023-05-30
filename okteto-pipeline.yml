@@ -1,5 +1,5 @@
 deploy:
   - name: Deploy PostgreSQL
     command: helm upgrade --install --version 6.3.12 postgresql okteto/postgresql --set postgresqlUsername=${POSTGRES_USERNAME} --set postgresqlPassword=${POSTGRES_PASSWORD} --set postgresqlDatabase=${POSTGRES_DB_NAME} --set persistence.size=2Gi
-#  - name: Deploy App
-#    command: helm upgrade --install homie-demo ./chart --set image.tag=${APP_VERSION} --set app.database.url=jdbc:postgresql://postgresql:5432/${POSTGRES_DB_NAME} --set app.database.username=${POSTGRES_USERNAME} --set app.database.password=${POSTGRES_PASSWORD} --set app.spring.profile=${SPRING_PROFILE} --set app.jwt.key=${HOMIE_APP_JWT_KEY} --set app.cloudinary.name=${HOMIE_CLOUDINARY_NAME} --set app.cloudinary.key=${HOMIE_CLOUDINARY_API_KEY} --set app.cloudinary.secret=${HOMIE_CLOUDINARY_API_SECRET}
+  - name: Deploy App
+    command: helm upgrade --install homie-demo ./chart --set image.tag=latest --set app.database.url=jdbc:postgresql://postgresql:5432/${POSTGRES_DB_NAME} --set app.database.username=${POSTGRES_USERNAME} --set app.database.password=${POSTGRES_PASSWORD} --set app.spring.profile=default --set app.jwt.key=${HOMIE_APP_JWT_KEY} --set app.cloudinary.name=${HOMIE_CLOUDINARY_NAME} --set app.cloudinary.key=${HOMIE_CLOUDINARY_API_KEY} --set app.cloudinary.secret=${HOMIE_CLOUDINARY_API_SECRET}

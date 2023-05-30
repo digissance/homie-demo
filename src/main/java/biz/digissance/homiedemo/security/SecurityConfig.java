@@ -39,6 +39,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import javax.crypto.spec.SecretKeySpec;
 import javax.sql.DataSource;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -100,7 +101,9 @@ public class SecurityConfig {
         bearerPostFilter.setBearerTokenResolver(bearerTokenResolver);
         return http
                 .cors(c -> {
-                    final var corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+                    final var corsConfiguration = new CorsConfiguration();
+                    corsConfiguration.setAllowedOriginPatterns(List.of("*"));
+                    corsConfiguration.applyPermitDefaultValues();
                     corsConfiguration.setAllowCredentials(true);
                     c.configurationSource(request -> corsConfiguration);
                 })
