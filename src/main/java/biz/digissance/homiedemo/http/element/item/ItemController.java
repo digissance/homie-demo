@@ -1,8 +1,8 @@
-package biz.digissance.homiedemo.http.item;
+package biz.digissance.homiedemo.http.element.item;
 
 import biz.digissance.homiedemo.http.dto.CreateElementRequest;
 import biz.digissance.homiedemo.http.dto.ItemDto;
-import biz.digissance.homiedemo.service.ItemService;
+import biz.digissance.homiedemo.service.element.ItemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;

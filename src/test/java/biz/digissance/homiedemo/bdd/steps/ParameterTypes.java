@@ -4,18 +4,14 @@ import biz.digissance.homiedemo.bdd.requests.ItemRequest;
 import biz.digissance.homiedemo.bdd.requests.RoomRequest;
 import biz.digissance.homiedemo.bdd.requests.SpaceRequest;
 import biz.digissance.homiedemo.bdd.requests.StorageRequest;
-import biz.digissance.homiedemo.http.dto.ElementDto;
-import biz.digissance.homiedemo.http.dto.RoomDto;
-import biz.digissance.homiedemo.http.dto.RoomOrStorageDto;
-import biz.digissance.homiedemo.http.dto.SpaceDto;
-import biz.digissance.homiedemo.http.dto.StorageDto;
-import biz.digissance.homiedemo.http.dto.UserDto;
+import biz.digissance.homiedemo.http.dto.*;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.ParameterType;
-import java.util.Map;
-import java.util.Objects;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+
+import java.util.Map;
+import java.util.Objects;
 
 public class ParameterTypes {
 
@@ -84,5 +80,10 @@ public class ParameterTypes {
     public ElementRequest elementRequest(String name) {
         final var elementDto = cache.findElementByName(name).orElseThrow();
         return ElementType.getType(elementDto).getRequest(elementDto);
+    }
+
+    @ParameterType(".*")
+    public ElementDto element(String name) {
+        return cache.findElementByName(name).orElseThrow();
     }
 }

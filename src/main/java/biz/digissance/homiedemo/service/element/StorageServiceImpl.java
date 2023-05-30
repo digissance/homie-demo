@@ -1,4 +1,4 @@
-package biz.digissance.homiedemo.service;
+package biz.digissance.homiedemo.service.element;
 
 import biz.digissance.homiedemo.http.ElementMapper;
 import biz.digissance.homiedemo.http.dto.CreateElementRequest;

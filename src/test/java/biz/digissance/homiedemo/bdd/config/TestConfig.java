@@ -5,12 +5,11 @@ import biz.digissance.homiedemo.bdd.steps.ElementTypeFactory;
 import biz.digissance.homiedemo.bdd.steps.MyCache;
 import biz.digissance.homiedemo.repository.ElementEntityRepository;
 import biz.digissance.homiedemo.repository.UserEntityRepository;
-import biz.digissance.homiedemo.service.UserService;
+import biz.digissance.homiedemo.service.user.UserService;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 
 @TestConfiguration
