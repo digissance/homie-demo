@@ -83,6 +83,10 @@ jobs:
           variables: APP_VERSION=${{ env.APP_VERSION }},SPRING_PROFILE=dev
           timeout: 15m
 
+  notify-job:
+    needs: [ build-and-push-image ]
+#    if: ${{ always() && (needs.first-job.result == 'failure' || needs.second-job.result == 'failure') }}
+    steps:
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:
