@@ -12,5 +12,13 @@ public interface SpaceEntityRepository extends JpaRepository<SpaceEntity, Long> 
     @Query("from SpaceEntity e left join fetch e.owner where e.id = ?1")
     Optional<SpaceEntity> findByIdFetchOwner(final long id);
 
+    @Query("""
+            from SpaceEntity e
+            left join fetch e.owner
+            left join fetch e.parent
+            left join fetch e.space
+            left join fetch e.photo
+            where e.owner.identifier = ?1
+            """)
     List<SpaceEntity> findByOwnerIdentifier(String ownerId);
 }
