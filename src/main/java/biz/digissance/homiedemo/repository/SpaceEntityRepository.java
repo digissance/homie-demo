@@ -1,14 +1,16 @@
 package biz.digissance.homiedemo.repository;
 
 import biz.digissance.homiedemo.domain.SpaceEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SpaceEntityRepository extends JpaRepository<SpaceEntity, Long> {
-    List<SpaceEntity> findByOwnerId(long ownerId);
 
-    Optional<SpaceEntity> findByIdAndOwner_Identifier(long id, final String ownerIdentifier);
+    @Query("from SpaceEntity e left join fetch e.owner where e.id = ?1")
+    Optional<SpaceEntity> findByIdFetchOwner(final long id);
 
     List<SpaceEntity> findByOwnerIdentifier(String ownerId);
 }

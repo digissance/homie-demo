@@ -1,23 +1,16 @@
 package biz.digissance.homiedemo.http.element.space;
 
 import biz.digissance.homiedemo.domain.RoomEntity;
-import biz.digissance.homiedemo.http.dto.CreateElementRequest;
-import biz.digissance.homiedemo.http.dto.CreateSpaceRequest;
-import biz.digissance.homiedemo.http.dto.RoomDto;
-import biz.digissance.homiedemo.http.dto.SpaceDto;
+import biz.digissance.homiedemo.http.dto.*;
 import biz.digissance.homiedemo.service.element.SpaceService;
-import java.util.List;
-import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/spaces")
@@ -61,7 +54,7 @@ public class SpaceController {
 
     @PatchMapping("/{id}")
     public final ResponseEntity<SpaceDto> editSpace(final @PathVariable long id,
-                                                   final @RequestBody CreateElementRequest request) {
+                                                    final @RequestBody CreateElementRequest request) {
         final var space = service.editSpace(id, request);
         return ResponseEntity.ok(space);
     }
@@ -76,5 +69,11 @@ public class SpaceController {
     public final ResponseEntity<SpaceDto> getWholeSpace(final @PathVariable long id,
                                                         final UriComponentsBuilder uri) {
         return ResponseEntity.ok(service.getSpaceTree(id));
+    }
+
+    @GetMapping("/{id}/elements/{elementId}/path")
+    public ResponseEntity<Collection<ElementDto>> getElementPath(final @PathVariable long id,
+                                                                 final @PathVariable long elementId) {
+        return ResponseEntity.ok(service.getElementPath(id, elementId));
     }
 }

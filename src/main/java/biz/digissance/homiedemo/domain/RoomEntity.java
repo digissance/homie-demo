@@ -18,9 +18,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @DiscriminatorValue("room")
-public class RoomEntity extends ElementEntity implements RoomOrStorage {
+public class RoomEntity extends ElementEntity {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
-    private Set<StuffEntity> elements = new HashSet<>();
+    private Set<ElementEntity> elements = new HashSet<>();
 }

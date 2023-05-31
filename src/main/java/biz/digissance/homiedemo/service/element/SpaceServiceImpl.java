@@ -1,30 +1,19 @@
 package biz.digissance.homiedemo.service.element;
 
-import biz.digissance.homiedemo.domain.ElementEntity;
-import biz.digissance.homiedemo.domain.ItemEntity;
-import biz.digissance.homiedemo.domain.RoomEntity;
-import biz.digissance.homiedemo.domain.SpaceEntity;
-import biz.digissance.homiedemo.domain.StorageEntity;
+import biz.digissance.homiedemo.domain.*;
 import biz.digissance.homiedemo.http.ElementMapper;
-import biz.digissance.homiedemo.http.dto.CreateElementRequest;
-import biz.digissance.homiedemo.http.dto.CreateSpaceRequest;
-import biz.digissance.homiedemo.http.dto.ElementDto;
-import biz.digissance.homiedemo.http.dto.RoomDto;
-import biz.digissance.homiedemo.http.dto.RoomOrStorageDto;
-import biz.digissance.homiedemo.http.dto.SpaceDto;
+import biz.digissance.homiedemo.http.dto.*;
 import biz.digissance.homiedemo.repository.ElementEntityRepository;
 import biz.digissance.homiedemo.repository.RoomEntityRepository;
 import biz.digissance.homiedemo.repository.SpaceEntityRepository;
 import biz.digissance.homiedemo.repository.UserEntityRepository;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -97,6 +86,21 @@ public class SpaceServiceImpl implements SpaceService {
     public List<SpaceDto> getSpaces(final Authentication auth) {
         return spaceEntityRepository.findByOwnerIdentifier(auth.getName())
                 .stream().map(mapper::toSpaceDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<ElementDto> getElementPath(long spaceId, long elementId) {
+
+        final var result = new ArrayDeque<ElementDto>();
+        final var allSpace = elementEntityRepository.findBySpaceId(spaceId);
+        final var element = allSpace.stream().filter(p -> p.getId() == elementId).findFirst().orElseThrow();
+        result.add(mapper.toElementDto(element));
+        var parent = element.getParent();
+        while (parent != null) {
+            result.push(mapper.toElementDto(parent));
+            parent = parent.getParent();
+        }
+        return result;
     }
 
     private void handle(SpaceEntity space, Map<Long, ElementDto> e) {

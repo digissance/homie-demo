@@ -140,11 +140,6 @@ public class SpaceSteps {
                 .containsExactlyInAnyOrderElementsOf(expectedItems.stream()
                         .map(ItemRequest::name)
                         .collect(Collectors.toList()));
-        try {
-            System.out.println(objectMapper.writeValueAsString(myCache.getSpace(spaceName)));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
     }
 
     @When("user logs in")

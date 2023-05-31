@@ -16,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @DiscriminatorValue("item")
-public class ItemEntity extends StuffEntity {
+public class ItemEntity extends ElementEntity{
 
 
 }

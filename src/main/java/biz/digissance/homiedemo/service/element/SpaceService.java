@@ -1,13 +1,12 @@
 package biz.digissance.homiedemo.service.element;
 
 import biz.digissance.homiedemo.domain.RoomEntity;
-import biz.digissance.homiedemo.http.dto.CreateElementRequest;
-import biz.digissance.homiedemo.http.dto.CreateSpaceRequest;
-import biz.digissance.homiedemo.http.dto.RoomDto;
-import biz.digissance.homiedemo.http.dto.SpaceDto;
-import java.util.List;
+import biz.digissance.homiedemo.http.dto.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+
+import java.util.Collection;
+import java.util.List;
 
 public interface SpaceService {
 
@@ -24,4 +23,7 @@ public interface SpaceService {
     SpaceDto editSpace(long spaceId, CreateElementRequest request);
 
     List<SpaceDto> getSpaces(Authentication auth);
+
+    @PreAuthorize("hasPermission(#elementId,'READ')")
+    Collection<ElementDto> getElementPath(long spaceId, long elementId);
 }

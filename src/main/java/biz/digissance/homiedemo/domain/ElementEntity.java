@@ -20,16 +20,16 @@ import java.util.Optional;
 public abstract class ElementEntity extends BaseEntity {
 
     @ToString.Exclude
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private SpaceEntity space;
 
     @ToString.Exclude
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private UserEntity owner;
 
-    @ManyToOne
     @ToString.Exclude
-    private ElementEntity from;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ElementEntity parent;
 
     private String name;
     private String description;

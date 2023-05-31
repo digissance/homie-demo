@@ -21,14 +21,14 @@ public abstract class ElementMapper {
     @Autowired
     private ElementEntityRepository elementEntityRepository;
 
+    @Mapping(target = "password", ignore = true)
+    public abstract UserDto toUserDto(final UserEntity user);
+
     @SubclassMapping(target = SpaceDto.class, source = SpaceEntity.class)
     @SubclassMapping(target = RoomDto.class, source = RoomEntity.class)
     @SubclassMapping(target = StorageDto.class, source = StorageEntity.class)
     @SubclassMapping(target = ItemDto.class, source = ItemEntity.class)
     public abstract ElementDto toElementDto(ElementEntity source);
-
-    @Mapping(target = "password", ignore = true)
-    public abstract UserDto toUserDto(final UserEntity user);
 
     @Mapping(target = "rooms", ignore = true)
     @Mapping(target = "photoSecureURL", expression = "java(myFunc(space))")
@@ -53,6 +53,39 @@ public abstract class ElementMapper {
     @Mapping(target = "owner", ignore = true)
     public abstract SpaceEntity toSpaceEntity(CreateSpaceRequest space);
 
+    public RoomEntity toRoomEntity(final long parentId, final CreateElementRequest request) {
+        final var parent = spaceEntityRepository.findByIdFetchOwner(parentId).orElseThrow();
+        return RoomEntity.builder()
+                .name(request.getName())
+                .description(request.getDescription())
+                .space(parent)
+                .owner(parent.getOwner())
+                .parent(parent)
+                .build();
+    }
+
+    public StorageEntity toStorageEntity(final Long parentId, final CreateElementRequest request) {
+        final var parent = elementEntityRepository.findByIdFetchAllProperties(parentId).orElseThrow();
+        return StorageEntity.builder()
+                .name(request.getName())
+                .description(request.getDescription())
+                .parent(parent)
+                .space(parent.getSpace())
+                .owner(parent.getOwner())
+                .build();
+    }
+
+    public ItemEntity toItemEntity(final Long parentId, final CreateElementRequest request) {
+        final var parent = elementEntityRepository.findByIdFetchAllProperties(parentId).orElseThrow();
+        return ItemEntity.builder()
+                .name(request.getName())
+                .description(request.getDescription())
+                .parent(parent)
+                .space(parent.getSpace())
+                .owner(parent.getOwner())
+                .build();
+    }
+
     public abstract void toSpaceEntityForUpdate(final CreateElementRequest source,
                                                 final @MappingTarget SpaceEntity target);
 
@@ -64,41 +97,6 @@ public abstract class ElementMapper {
 
     public abstract void toItemEntityForUpdate(final CreateElementRequest request,
                                                final @MappingTarget ItemEntity itemEntity);
-
-    public RoomEntity toRoomEntity(final long parentId, final CreateElementRequest request) {
-        final var parent = spaceEntityRepository.findById(parentId).orElseThrow();
-        return RoomEntity.builder()
-                .name(request.getName())
-                .description(request.getDescription())
-                .space(parent)
-                .owner(parent.getOwner())
-                .from(parent)
-                .build();
-    }
-
-    public ItemEntity toItemEntity(final Long parentId, final CreateElementRequest request) {
-        final var parent = elementEntityRepository.findById(parentId).orElseThrow();
-        return ItemEntity.builder()
-                .name(request.getName())
-                .description(request.getDescription())
-                .parent((RoomOrStorage) parent)
-                .space(parent.getSpace())
-                .owner(parent.getOwner())
-                .from(parent)
-                .build();
-    }
-
-    public StorageEntity toStorageEntity(final Long parentId, final CreateElementRequest request) {
-        final var parent = elementEntityRepository.findById(parentId).orElseThrow();
-        return StorageEntity.builder()
-                .name(request.getName())
-                .description(request.getDescription())
-                .parent((RoomOrStorage) parent)
-                .space(parent.getSpace())
-                .owner(parent.getOwner())
-                .from(parent)
-                .build();
-    }
 
     public String myFunc(ElementEntity element) {
         return Optional.ofNullable(element.getPhoto())
