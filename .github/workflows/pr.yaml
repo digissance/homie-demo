@@ -80,7 +80,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.OKTETO_PREVIEW_TOKEN }}
         with:
           name: pr-${{ github.event.number }}-${{ github.actor }}
-          variables: APP_VERSION=${{ env.APP_VERSION }},SPRING_PROFILE=dev
+          variables: APP_VERSION=${{ env.APP_VERSION }},SPRING_PROFILE=dev,REPLICA_COUNT=1
           timeout: 15m
 
   notify-job:
