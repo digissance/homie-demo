@@ -1,20 +1,21 @@
 package biz.digissance.homiedemo.bdd.steps;
 
 import biz.digissance.homiedemo.http.dto.ElementDto;
-import biz.digissance.homiedemo.http.dto.ItemDto;
 import biz.digissance.homiedemo.http.dto.RoomOrStorageDto;
 import biz.digissance.homiedemo.http.dto.SpaceDto;
+import biz.digissance.homiedemo.http.dto.StorageDto;
 import biz.digissance.homiedemo.http.dto.UserDto;
 import biz.digissance.homiedemo.repository.ElementEntityRepository;
 import biz.digissance.homiedemo.repository.UserEntityRepository;
 import biz.digissance.homiedemo.service.user.UserService;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class MyCache {
@@ -73,10 +74,10 @@ public class MyCache {
         return room.get();
     }
 
-    public ItemDto findItemByName(final String itemName) {
-        final var item = new AtomicReference<ItemDto>();
+    public StorageDto findItemByName(final String itemName) {
+        final var item = new AtomicReference<StorageDto>();
         final var visitor = getTraverser(elementDto -> {
-            if (elementDto.getName().equals(itemName) && elementDto instanceof ItemDto rs) {
+            if (elementDto.getName().equals(itemName) && elementDto instanceof StorageDto rs) {
                 item.set(rs);
             }
         });

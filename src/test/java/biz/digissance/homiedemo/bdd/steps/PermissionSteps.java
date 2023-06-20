@@ -1,17 +1,17 @@
 package biz.digissance.homiedemo.bdd.steps;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
-import biz.digissance.homiedemo.bdd.requests.ItemRequest;
 import biz.digissance.homiedemo.bdd.requests.RoomRequest;
 import biz.digissance.homiedemo.bdd.requests.StorageRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
-import java.util.Map;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatusCode;
+
+import java.util.Map;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class PermissionSteps {
 
@@ -44,7 +44,7 @@ public class PermissionSteps {
     }
 
     @And("user creates following item in {string} and permission is denied:")
-    public void userCreatesFollowingItemInAndPermissionIsDenied(String roomName, ItemRequest request) {
+    public void userCreatesFollowingItemInAndPermissionIsDenied(String roomName, StorageRequest request) {
         final var room = cache.findRoomByName(roomName);
         final var actual = request.createWithResponse(room);
         assertThat(actual.getStatusCode().is4xxClientError()).isTrue();
@@ -69,7 +69,7 @@ public class PermissionSteps {
 
     @And("user deletes item {string} and permission is denied")
     public void userDeletesItem(String itemName) {
-        final var actual = restTemplate.exchange("/items/{id}", HttpMethod.DELETE, null, Void.class,
+        final var actual = restTemplate.exchange("/storage/{id}", HttpMethod.DELETE, null, Void.class,
                 Map.of("id", cache.findItemByName(itemName).getId()));
         assertThat(actual.getStatusCode().is4xxClientError()).isTrue();
         assertThat(actual.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(403));

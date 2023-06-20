@@ -1,30 +1,28 @@
 package biz.digissance.homiedemo.bdd.steps;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import biz.digissance.homiedemo.bdd.requests.ItemRequest;
 import biz.digissance.homiedemo.bdd.requests.RoomRequest;
 import biz.digissance.homiedemo.bdd.requests.SpaceRequest;
 import biz.digissance.homiedemo.bdd.requests.StorageRequest;
 import biz.digissance.homiedemo.http.dto.ElementDto;
-import biz.digissance.homiedemo.http.dto.ItemDto;
 import biz.digissance.homiedemo.http.dto.SpaceDto;
 import biz.digissance.homiedemo.http.dto.StorageDto;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.client.support.BasicAuthenticationInterceptor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.client.support.BasicAuthenticationInterceptor;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class SpaceSteps {
 
@@ -32,7 +30,7 @@ public class SpaceSteps {
     private final MyCache myCache;
     private List<RoomRequest> expectedRooms;
     private List<StorageRequest> expectedStorage;
-    private List<ItemRequest> expectedItems;
+    private List<StorageRequest> expectedItems;
     private final ObjectMapper objectMapper;
 
     public SpaceSteps(final TestRestTemplate restTemplate, final MyCache myCache,
@@ -117,11 +115,11 @@ public class SpaceSteps {
     }
 
     @When("user creates following items in different storage units:")
-    public void user_creates_following_items_in_different_storage_units(List<ItemRequest> itemRequests) {
+    public void user_creates_following_items_in_different_storage_units(List<StorageRequest> itemRequests) {
         expectedItems = itemRequests;
-        itemRequests.forEach(s -> {
-            final var parent = myCache.findRoomByName(s.parent().getName());
-            final var actual = s.create(parent);
+        itemRequests.forEach(request -> {
+            final var parent = myCache.findRoomByName(request.parent().getName());
+            final var actual = request.create(parent);
             parent.getStuff().add(actual);
         });
     }
@@ -131,14 +129,14 @@ public class SpaceSteps {
         final var actual = new ArrayList<String>();
         myCache.getSpace(spaceName)
                 .visit(getTraverser(elementDto -> {
-                    if (elementDto instanceof ItemDto rs) {
+                    if (elementDto instanceof StorageDto rs && (rs.getStuff() == null || rs.getStuff().isEmpty())) {
                         actual.add(elementDto.getName());
                     }
                 }));
         assertThat(actual)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("parent")
                 .containsExactlyInAnyOrderElementsOf(expectedItems.stream()
-                        .map(ItemRequest::name)
+                        .map(StorageRequest::name)
                         .collect(Collectors.toList()));
     }
 

@@ -1,8 +1,16 @@
 package biz.digissance.homiedemo.service.element;
 
-import biz.digissance.homiedemo.domain.*;
+import biz.digissance.homiedemo.domain.ElementEntity;
+import biz.digissance.homiedemo.domain.RoomEntity;
+import biz.digissance.homiedemo.domain.SpaceEntity;
+import biz.digissance.homiedemo.domain.StorageEntity;
 import biz.digissance.homiedemo.http.ElementMapper;
-import biz.digissance.homiedemo.http.dto.*;
+import biz.digissance.homiedemo.http.dto.CreateElementRequest;
+import biz.digissance.homiedemo.http.dto.CreateSpaceRequest;
+import biz.digissance.homiedemo.http.dto.ElementDto;
+import biz.digissance.homiedemo.http.dto.RoomDto;
+import biz.digissance.homiedemo.http.dto.RoomOrStorageDto;
+import biz.digissance.homiedemo.http.dto.SpaceDto;
 import biz.digissance.homiedemo.repository.ElementEntityRepository;
 import biz.digissance.homiedemo.repository.RoomEntityRepository;
 import biz.digissance.homiedemo.repository.SpaceEntityRepository;
@@ -11,7 +19,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
@@ -38,8 +51,7 @@ public class SpaceServiceImpl implements SpaceService {
         consumerMap = Map.of(
                 SpaceEntity.class, (p, e) -> handle((SpaceEntity) p, e),
                 RoomEntity.class, (p, e) -> handle((RoomEntity) p, e),
-                StorageEntity.class, (p, e) -> handle((StorageEntity) p, e),
-                ItemEntity.class, (p, e) -> handle((ItemEntity) p, e)
+                StorageEntity.class, (p, e) -> handle((StorageEntity) p, e)
         );
     }
 
@@ -118,11 +130,5 @@ public class SpaceServiceImpl implements SpaceService {
         final var storageDto = mapper.toStorageDto(storage);
         e.put(storage.getId(), storageDto);
         ((RoomOrStorageDto) e.get(storage.getParent().getId())).getStuff().add(storageDto);
-    }
-
-    private void handle(ItemEntity item, Map<Long, ElementDto> e) {
-        final var itemDto = mapper.toItemDto(item);
-        e.put(item.getId(), itemDto);
-        ((RoomOrStorageDto) e.get(item.getParent().getId())).getStuff().add(itemDto);
     }
 }

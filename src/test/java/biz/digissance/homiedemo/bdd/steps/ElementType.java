@@ -1,16 +1,15 @@
 package biz.digissance.homiedemo.bdd.steps;
 
-import biz.digissance.homiedemo.bdd.requests.ItemRequest;
 import biz.digissance.homiedemo.bdd.requests.RoomRequest;
 import biz.digissance.homiedemo.bdd.requests.SpaceRequest;
 import biz.digissance.homiedemo.bdd.requests.StorageRequest;
 import biz.digissance.homiedemo.http.dto.ElementDto;
-import biz.digissance.homiedemo.http.dto.ItemDto;
 import biz.digissance.homiedemo.http.dto.RoomDto;
 import biz.digissance.homiedemo.http.dto.SpaceDto;
 import biz.digissance.homiedemo.http.dto.StorageDto;
-import java.util.function.Function;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+
+import java.util.function.Function;
 
 public enum ElementType implements ElementTypeFactory {
     SPACE(new Function<>() {
@@ -31,12 +30,6 @@ public enum ElementType implements ElementTypeFactory {
                     elementDto.getDescription(),
                     null);
         }
-    }), ITEM(new Function<>() {
-        @Override
-        public ElementRequest apply(final ElementDto elementDto) {
-            return new ItemRequest(ITEM.restTemplate, ITEM.cache, elementDto.getName(), elementDto.getDescription(),
-                    null);
-        }
     });
 
     ElementType(final Function<ElementDto, ElementRequest> buildRequest) {
@@ -52,9 +45,6 @@ public enum ElementType implements ElementTypeFactory {
         }
         if (elementDto instanceof StorageDto) {
             return STORAGE;
-        }
-        if (elementDto instanceof ItemDto) {
-            return ITEM;
         }
         throw new IllegalStateException();
     }

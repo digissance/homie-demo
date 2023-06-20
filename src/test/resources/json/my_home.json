@@ -14,7 +14,7 @@
           "description": "Books and documents",
           "stuff": [
             {
-              "@type": "Item",
+              "@type": "Storage",
               "name": "Tv Guide"
             }
           ]
@@ -25,7 +25,7 @@
           "description": "Baby stuff and medicines",
           "stuff": [
             {
-              "@type": "Item",
+              "@type": "Storage",
               "name": "Aspirin"
             }
           ]
@@ -36,13 +36,13 @@
           "description": "Blankets and pillows",
           "stuff": [
             {
-              "@type": "Item",
+              "@type": "Storage",
               "name": "Blankets"
             }
           ]
         },
         {
-          "@type": "Item",
+          "@type": "Storage",
           "name": "Tv Remote"
         }
       ]
@@ -58,7 +58,7 @@
           "description": "Toiletry stuff",
           "stuff": [
             {
-              "@type": "Item",
+              "@type": "Storage",
               "name": "Toothbrush"
             }
           ]
@@ -76,7 +76,7 @@
           "description": "The one and only fridge",
           "stuff": [
             {
-              "@type": "Item",
+              "@type": "Storage",
               "name": "Strawberry Jam"
             }
           ]
@@ -87,7 +87,7 @@
           "description": "Dry food and cookies",
           "stuff": [
             {
-              "@type": "Item",
+              "@type": "Storage",
               "name": "Cookies"
             }
           ]
@@ -105,7 +105,7 @@
           "description": "Wardrobe next to the window, guy's clothes and hardware tools",
           "stuff": [
             {
-              "@type": "Item",
+              "@type": "Storage",
               "name": "Hammer"
             }
           ]
@@ -116,7 +116,7 @@
           "description": "Wardrobe next to the door, girl's clothes and lots of shoes",
           "stuff": [
             {
-              "@type": "Item",
+              "@type": "Storage",
               "name": "Shoes"
             }
           ]
@@ -127,7 +127,7 @@
           "description": "Drawers between wardrobes, socks and underware and some documents",
           "stuff": [
             {
-              "@type": "Item",
+              "@type": "Storage",
               "name": "Socks"
             }
           ]
@@ -145,7 +145,7 @@
           "description": "This is the office and misc stuff",
           "stuff": [
             {
-              "@type": "Item",
+              "@type": "Storage",
               "name": "Pillows"
             }
           ]
@@ -168,7 +168,7 @@
               "description": "Towels",
               "stuff": [
                 {
-                  "@type": "Item",
+                  "@type": "Storage",
                   "name": "Bath Toys"
                 }
               ]
@@ -179,7 +179,7 @@
               "description": "Towels",
               "stuff": [
                 {
-                  "@type": "Item",
+                  "@type": "Storage",
                   "name": "Green Towel"
                 }
               ]
@@ -190,7 +190,7 @@
               "description": "Towels",
               "stuff": [
                 {
-                  "@type": "Item",
+                  "@type": "Storage",
                   "name": "Gray Towel"
                 }
               ]
@@ -203,7 +203,7 @@
           "description": "Toiletry stuff and hair dryer",
           "stuff": [
             {
-              "@type": "Item",
+              "@type": "Storage",
               "name": "Soap"
             }
           ]
