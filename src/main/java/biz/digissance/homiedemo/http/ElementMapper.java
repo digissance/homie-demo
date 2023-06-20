@@ -1,10 +1,28 @@
 package biz.digissance.homiedemo.http;
 
-import biz.digissance.homiedemo.domain.*;
-import biz.digissance.homiedemo.http.dto.*;
+import biz.digissance.homiedemo.domain.ElementEntity;
+import biz.digissance.homiedemo.domain.PhotoEntity;
+import biz.digissance.homiedemo.domain.RoomEntity;
+import biz.digissance.homiedemo.domain.SpaceEntity;
+import biz.digissance.homiedemo.domain.StorageEntity;
+import biz.digissance.homiedemo.domain.UserEntity;
+import biz.digissance.homiedemo.http.dto.CreateElementRequest;
+import biz.digissance.homiedemo.http.dto.CreateSpaceRequest;
+import biz.digissance.homiedemo.http.dto.ElementDto;
+import biz.digissance.homiedemo.http.dto.RoomDto;
+import biz.digissance.homiedemo.http.dto.SpaceDto;
+import biz.digissance.homiedemo.http.dto.StorageDto;
+import biz.digissance.homiedemo.http.dto.UserDto;
 import biz.digissance.homiedemo.repository.ElementEntityRepository;
 import biz.digissance.homiedemo.repository.SpaceEntityRepository;
-import org.mapstruct.*;
+import org.mapstruct.CollectionMappingStrategy;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.SubclassExhaustiveStrategy;
+import org.mapstruct.SubclassMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
@@ -27,7 +45,6 @@ public abstract class ElementMapper {
     @SubclassMapping(target = SpaceDto.class, source = SpaceEntity.class)
     @SubclassMapping(target = RoomDto.class, source = RoomEntity.class)
     @SubclassMapping(target = StorageDto.class, source = StorageEntity.class)
-    @SubclassMapping(target = ItemDto.class, source = ItemEntity.class)
     public abstract ElementDto toElementDto(ElementEntity source);
 
     @Mapping(target = "rooms", ignore = true)
@@ -44,11 +61,6 @@ public abstract class ElementMapper {
     @Mapping(target = "spaceId", expression = "java(storage.getSpace().getId())")
     @Mapping(target = "photoSecureURL", expression = "java(myFunc(storage))")
     public abstract StorageDto toStorageDto(final StorageEntity storage);
-
-    @Mapping(target = "parentId", expression = "java(item.getParent().getId())")
-    @Mapping(target = "spaceId", expression = "java(item.getSpace().getId())")
-    @Mapping(target = "photoSecureURL", expression = "java(myFunc(item))")
-    public abstract ItemDto toItemDto(final ItemEntity item);
 
     @Mapping(target = "owner", ignore = true)
     public abstract SpaceEntity toSpaceEntity(CreateSpaceRequest space);
@@ -75,17 +87,6 @@ public abstract class ElementMapper {
                 .build();
     }
 
-    public ItemEntity toItemEntity(final Long parentId, final CreateElementRequest request) {
-        final var parent = elementEntityRepository.findByIdFetchAllProperties(parentId).orElseThrow();
-        return ItemEntity.builder()
-                .name(request.getName())
-                .description(request.getDescription())
-                .parent(parent)
-                .space(parent.getSpace())
-                .owner(parent.getOwner())
-                .build();
-    }
-
     public abstract void toSpaceEntityForUpdate(final CreateElementRequest source,
                                                 final @MappingTarget SpaceEntity target);
 
@@ -94,9 +95,6 @@ public abstract class ElementMapper {
 
     public abstract void toStorageEntityForUpdate(final CreateElementRequest request,
                                                   final @MappingTarget StorageEntity storageEntity);
-
-    public abstract void toItemEntityForUpdate(final CreateElementRequest request,
-                                               final @MappingTarget ItemEntity itemEntity);
 
     public String myFunc(ElementEntity element) {
         return Optional.ofNullable(element.getPhoto())

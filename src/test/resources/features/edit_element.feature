@@ -16,10 +16,10 @@ Feature: Edit elements names and descriptions
       | storage | desk        | where my documents are  | office   |
       | storage | shelves     | where my toiletries are | bathroom |
       | storage | pantry      | where my food is        | bathroom |
-      | item    | shirts      | my shirts               | wardrobe |
-      | item    | passport    | my passport             | desk     |
-      | item    | tooth brush | my tooth brush          | shelves  |
-      | item    | cookies     | my cookies              | pantry   |
+      | storage | shirts      | my shirts               | wardrobe |
+      | storage | passport    | my passport             | desk     |
+      | storage | tooth brush | my tooth brush          | shelves  |
+      | storage | cookies     | my cookies              | pantry   |
     When user edits name of element home to 'my home' is a success
 
   Scenario: 'Edit room name'
@@ -34,10 +34,10 @@ Feature: Edit elements names and descriptions
       | storage | desk        | where my documents are  | office   |
       | storage | shelves     | where my toiletries are | bathroom |
       | storage | pantry      | where my food is        | bathroom |
-      | item    | shirts      | my shirts               | wardrobe |
-      | item    | passport    | my passport             | desk     |
-      | item    | tooth brush | my tooth brush          | shelves  |
-      | item    | cookies     | my cookies              | pantry   |
+      | storage | shirts      | my shirts               | wardrobe |
+      | storage | passport    | my passport             | desk     |
+      | storage | tooth brush | my tooth brush          | shelves  |
+      | storage | cookies     | my cookies              | pantry   |
     When user edits name of element bedroom to 'master home' is a success
 
   Scenario: 'Edit storage name'
@@ -52,10 +52,10 @@ Feature: Edit elements names and descriptions
       | storage | desk        | where my documents are  | office   |
       | storage | shelves     | where my toiletries are | bathroom |
       | storage | pantry      | where my food is        | bathroom |
-      | item    | shirts      | my shirts               | wardrobe |
-      | item    | passport    | my passport             | desk     |
-      | item    | tooth brush | my tooth brush          | shelves  |
-      | item    | cookies     | my cookies              | pantry   |
+      | storage | shirts      | my shirts               | wardrobe |
+      | storage | passport    | my passport             | desk     |
+      | storage | tooth brush | my tooth brush          | shelves  |
+      | storage | cookies     | my cookies              | pantry   |
     When user edits name of element desk to 'office desk' is a success
 
 
@@ -71,8 +71,8 @@ Feature: Edit elements names and descriptions
       | storage | desk        | where my documents are  | office   |
       | storage | shelves     | where my toiletries are | bathroom |
       | storage | pantry      | where my food is        | bathroom |
-      | item    | shirts      | my shirts               | wardrobe |
-      | item    | passport    | my passport             | desk     |
-      | item    | tooth brush | my tooth brush          | shelves  |
-      | item    | cookies     | my cookies              | pantry   |
+      | storage | shirts      | my shirts               | wardrobe |
+      | storage | passport    | my passport             | desk     |
+      | storage | tooth brush | my tooth brush          | shelves  |
+      | storage | cookies     | my cookies              | pantry   |
     When user edits name of element passport to 'id document' is a success

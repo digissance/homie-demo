@@ -1,10 +1,14 @@
 package biz.digissance.homiedemo.bdd.steps;
 
-import biz.digissance.homiedemo.bdd.requests.ItemRequest;
 import biz.digissance.homiedemo.bdd.requests.RoomRequest;
 import biz.digissance.homiedemo.bdd.requests.SpaceRequest;
 import biz.digissance.homiedemo.bdd.requests.StorageRequest;
-import biz.digissance.homiedemo.http.dto.*;
+import biz.digissance.homiedemo.http.dto.ElementDto;
+import biz.digissance.homiedemo.http.dto.RoomDto;
+import biz.digissance.homiedemo.http.dto.RoomOrStorageDto;
+import biz.digissance.homiedemo.http.dto.SpaceDto;
+import biz.digissance.homiedemo.http.dto.StorageDto;
+import biz.digissance.homiedemo.http.dto.UserDto;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.ParameterType;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -12,6 +16,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 public class ParameterTypes {
 
@@ -42,14 +47,12 @@ public class ParameterTypes {
 
     @DataTableType
     public StorageRequest storageRequest(Map<String, String> map) {
-        final var room = RoomDto.builder().name(map.get("room")).build();
-        return new StorageRequest(restTemplate, cache, map.get("name"), map.get("description"), room);
-    }
-
-    @DataTableType
-    public ItemRequest itemRequest(Map<String, String> map) {
-        final var storage = StorageDto.builder().name(map.get("storage")).build();
-        return new ItemRequest(restTemplate, cache, map.get("name"), map.get("description"), storage);
+        final var room = Optional.ofNullable(map.get("room"))
+                .map(p -> RoomDto.builder().name(p).build()).orElse(null);
+        final var storage = Optional.ofNullable(map.get("storage"))
+                .map(p -> StorageDto.builder().name(p).build()).orElse(null);
+        var parent = room != null ? room : storage;
+        return new StorageRequest(restTemplate, cache, map.get("name"), map.get("description"), parent);
     }
 
     @DataTableType
@@ -66,10 +69,6 @@ public class ParameterTypes {
             case "storage" -> {
                 final var parent = (RoomOrStorageDto) cache.findElementByName(map.get("parent")).orElseThrow();
                 request = new StorageRequest(restTemplate, cache, map.get("name"), map.get("description"), parent);
-            }
-            case "item" -> {
-                final var parent = (RoomOrStorageDto) cache.findElementByName(map.get("parent")).orElseThrow();
-                request = new ItemRequest(restTemplate, cache, map.get("name"), map.get("description"), parent);
             }
         }
 

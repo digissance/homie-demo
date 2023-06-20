@@ -14,8 +14,7 @@ import lombok.experimental.SuperBuilder;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = SpaceDto.class, name = "Space"),
         @JsonSubTypes.Type(value = RoomDto.class, name = "Room"),
-        @JsonSubTypes.Type(value = StorageDto.class, name = "Storage"),
-        @JsonSubTypes.Type(value = ItemDto.class, name = "Item")
+        @JsonSubTypes.Type(value = StorageDto.class, name = "Storage")
 })
 public abstract class ElementDto {
     private Long id;

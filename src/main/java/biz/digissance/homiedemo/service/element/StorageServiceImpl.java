@@ -2,7 +2,6 @@ package biz.digissance.homiedemo.service.element;
 
 import biz.digissance.homiedemo.http.ElementMapper;
 import biz.digissance.homiedemo.http.dto.CreateElementRequest;
-import biz.digissance.homiedemo.http.dto.ItemDto;
 import biz.digissance.homiedemo.http.dto.StorageDto;
 import biz.digissance.homiedemo.repository.ElementEntityRepository;
 import biz.digissance.homiedemo.repository.StorageEntityRepository;
@@ -23,12 +22,6 @@ public class StorageServiceImpl implements StorageService {
         this.repository = repository;
         this.storageRepository = storageRepository;
         this.mapper = mapper;
-    }
-
-    @Override
-    public ItemDto createItem(final long storageId, final CreateElementRequest request) {
-        final var itemEntity = mapper.toItemEntity(storageId, request);
-        return mapper.toItemDto(repository.save(itemEntity));
     }
 
     @Override
