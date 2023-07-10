@@ -41,6 +41,7 @@ import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -104,6 +105,8 @@ public class SecurityConfig {
                     final var corsConfiguration = new CorsConfiguration();
                     corsConfiguration.setAllowedOriginPatterns(List.of("*"));
                     corsConfiguration.applyPermitDefaultValues();
+                    corsConfiguration.setAllowedMethods(
+                            Arrays.stream(HttpMethod.values()).map(HttpMethod::name).collect(Collectors.toList()));
                     corsConfiguration.setAllowCredentials(true);
                     c.configurationSource(request -> corsConfiguration);
                 })
