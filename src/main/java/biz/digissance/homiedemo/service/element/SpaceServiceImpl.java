@@ -115,6 +115,11 @@ public class SpaceServiceImpl implements SpaceService {
         return result;
     }
 
+    @Override
+    public void deleteSpace(long id) {
+        spaceEntityRepository.deleteById(id);
+    }
+
     private void handle(SpaceEntity space, Map<Long, ElementDto> e) {
         final var spaceDto = mapper.toSpaceDto(space);
         e.put(space.getId(), spaceDto);

@@ -76,4 +76,10 @@ public class SpaceController {
                                                                  final @PathVariable long elementId) {
         return ResponseEntity.ok(service.getElementPath(id, elementId));
     }
+
+    @DeleteMapping("/{id}")
+    public final ResponseEntity<Void> deleteSpace(final @PathVariable long id) {
+        service.deleteSpace(id);
+        return ResponseEntity.noContent().build();
+    }
 }
