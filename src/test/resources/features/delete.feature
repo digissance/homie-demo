@@ -10,3 +10,6 @@ Feature: Delete rooms storage and items
     And user deletes storage 'Bottom Shelf'
     And user deletes item 'Shoes'
 
+  Scenario: 'User deletes a space'
+    When user deletes space 'Home'
+

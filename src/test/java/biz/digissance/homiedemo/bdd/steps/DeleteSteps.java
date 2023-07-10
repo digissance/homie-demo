@@ -92,4 +92,11 @@ public class DeleteSteps {
                 Map.of("id", cache.findItemByName(itemName).getId()));
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
     }
+
+    @When("user deletes space {string}")
+    public void user_deletes_space(String spaceName) {
+        final var response = restTemplate.exchange("/spaces/{id}", HttpMethod.DELETE, null, Void.class,
+                Map.of("id", cache.findElementByName(spaceName).orElseThrow().getId()));
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+    }
 }

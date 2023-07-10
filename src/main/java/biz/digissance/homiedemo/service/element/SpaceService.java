@@ -26,4 +26,7 @@ public interface SpaceService {
 
     @PreAuthorize("hasPermission(#elementId,'READ')")
     Collection<ElementDto> getElementPath(long spaceId, long elementId);
+
+    @PreAuthorize("hasPermission(#id,'EDIT')")
+    void deleteSpace(long id);
 }
