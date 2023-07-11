@@ -128,6 +128,7 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/actuator/health/liveness", "/actuator/health/readiness").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/spaces/**","/rooms/**","/storage/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users").anonymous()
                         .requestMatchers("/api/auth/token").hasRole("USER")
                         .anyRequest().hasAuthority("SCOPE_READ")
