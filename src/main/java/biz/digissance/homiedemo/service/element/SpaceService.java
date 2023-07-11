@@ -24,7 +24,7 @@ public interface SpaceService {
 
     List<SpaceDto> getSpaces(Authentication auth);
 
-    @PreAuthorize("hasPermission(#elementId,'READ')")
+    //@PreAuthorize("hasPermission(#elementId,'READ')")
     Collection<ElementDto> getElementPath(long spaceId, long elementId);
 
     @PreAuthorize("hasPermission(#id,'EDIT')")
