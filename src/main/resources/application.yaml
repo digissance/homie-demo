@@ -35,7 +35,7 @@ app:
     cookie:
       secured: true
     jwt:
-      token_age: 60
+      token_age: 1800
       key: "${APP_JWT_KEY:123456}"
     debug:
       enabled: false
