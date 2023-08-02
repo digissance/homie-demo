@@ -31,12 +31,13 @@ Feature: Create a Space with several rooms and elements in it
       | Bathroom 1        | Drawers Bathroom 1 | Toiletry stuff                                                    |
       | Bathroom 2 (Kids) | Drawers Bathroom 2 | Toiletry stuff and hair dryer                                     |
       | Bathroom 2 (Kids) | Shelves            | Towels                                                            |
-      | Living room       | Wardrobe LR        | Baby stuff and medicines                                          |
-      | Living room       | Sofa Bed LR        | Blankets and pillows                                              |
-      | Living room       | Tv Closet          | Books and documents                                               |
       | Shelves           | Top Shelf          | Towels                                                            |
       | Shelves           | Middle Shelf       | Towels                                                            |
       | Shelves           | Bottom Shelf       | Towels                                                            |
+      | Living room       | Wardrobe LR        | Baby stuff and medicines                                          |
+      | Living room       | Sofa Bed LR        | Blankets and pillows                                              |
+      | Living room       | Tv Closet          | Books and documents                                               |
+
     Then all the storage units listed above exist in the space 'Home'
     When user creates following items in different storage units:
       | storage            | name           | description |

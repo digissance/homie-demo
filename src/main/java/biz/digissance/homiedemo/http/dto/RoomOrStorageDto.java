@@ -1,9 +1,11 @@
 package biz.digissance.homiedemo.http.dto;
 
-import java.util.Set;
+import java.util.List;
 
 public interface RoomOrStorageDto {
     Long getId();
+
     String getName();
-    Set<StuffDto> getStuff();
+
+    List<StuffDto> getStuff();
 }
