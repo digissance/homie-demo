@@ -1,8 +1,8 @@
 package biz.digissance.homiedemo.http.dto;
 
-import java.util.Set;
+import java.util.List;
 
 public interface SomethingHoldingElements {
 
-    Set<ElementDto> getElements();
+    List<ElementDto> getElements();
 }

@@ -66,7 +66,7 @@ public class SpaceSteps {
         myCache.setSpaces(result);
         assertThat(result)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("path", "id")
-                .containsExactlyInAnyOrderElementsOf(spaces.stream()
+                .containsExactlyElementsOf(spaces.stream()
                         .map(SpaceRequest::getExpected).collect(Collectors.toList()));
     }
 
@@ -76,7 +76,7 @@ public class SpaceSteps {
         final var space = myCache.getSpace(spaceName);
         rooms.forEach(room -> {
             final var actual = room.create(space);
-            space.getRooms().add(actual);
+            //space.getRooms().add(actual);
         });
     }
 
@@ -85,7 +85,7 @@ public class SpaceSteps {
         final var space = myCache.getSpace(spaceName);
         assertThat(space.getRooms().stream().map(ElementDto::getName).collect(Collectors.toList()))
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("path", "id")
-                .containsExactlyInAnyOrderElementsOf(
+                .containsExactlyElementsOf(
                         expectedRooms.stream().map(RoomRequest::name).collect(Collectors.toList()));
     }
 
@@ -95,7 +95,7 @@ public class SpaceSteps {
         storageRequests.forEach(request -> {
             final var parent = myCache.findRoomByName(request.parent().getName());
             final var actual = request.create(parent);
-            parent.getStuff().add(actual);
+            //parent.getStuff().add(actual);
         });
     }
 
@@ -110,7 +110,7 @@ public class SpaceSteps {
                 }));
         assertThat(actual)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("room")
-                .containsExactlyInAnyOrderElementsOf(expectedStorage.stream()
+                .containsExactlyElementsOf(expectedStorage.stream()
                         .map(StorageRequest::name).collect(Collectors.toList()));
     }
 
@@ -120,7 +120,7 @@ public class SpaceSteps {
         itemRequests.forEach(request -> {
             final var parent = myCache.findRoomByName(request.parent().getName());
             final var actual = request.create(parent);
-            parent.getStuff().add(actual);
+            //parent.getStuff().add(actual);
         });
     }
 
@@ -135,7 +135,7 @@ public class SpaceSteps {
                 }));
         assertThat(actual)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("parent")
-                .containsExactlyInAnyOrderElementsOf(expectedItems.stream()
+                .containsExactlyElementsOf(expectedItems.stream()
                         .map(StorageRequest::name)
                         .collect(Collectors.toList()));
     }
